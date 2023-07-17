@@ -9,7 +9,7 @@ def create_pages(skillmap_path, dst_dir):
     skillmap = read_skillmap(skillmap_path)
     for _, unit in skillmap.items():
         unit_name = unit['unit_name']
-        questions_per_skill = unit['questions_per_skill']
+        questions_per_skill = int(unit['questions_per_skill'])
         page_count = 1
         while True:
             page_key = f"page-{page_count}"
