@@ -5,7 +5,7 @@ import openai
 model = "gpt-3.5-turbo"
 system_role = "Your are a pedagogical professor in computer science, with 20+ years of experience."
 skill = "Understand the basics of concurrent, parallel, and sequential programming, and their differences."
-number_of_questions = 3
+number_of_questions = 5
 
 #
 # Helper functions
@@ -40,7 +40,7 @@ def get_response_from_api(model, messages):
 #
 # Prompt functions
 #
-def question_prompt(skill, number_of_questions):
+def questions_prompt(skill, number_of_questions):
     return f"""Your task is to create questions for a Question Based Learning (QBL) course.
 
     The course is an introduction to parallel and concurrent programming, and the programming language is Go / Golang. 
@@ -111,119 +111,59 @@ def improvement_prompt():
     Mark the critique section with "CRITIQUE:" and the improved questions with "IMPROVED QUESTIONS:"."""
 
 
-improvement_test = """CRITIQUE:
-- The questions could benefit from being more specific and targeted towards the differences between sequential, concurrent, and parallel programming.
-- The feedback for incorrect options should provide more guidance and explanations to help students understand the reasoning behind the correct answer.
-- The code snippet in Question 3 could be more challenging and related directly to concurrent or parallel programming concepts.
+# Add prompt to messages and get response content
+def fetch_response_content(prompt, messages):
+    messages.append(create_message("user", prompt))
+    content = ""
 
-IMPROVED QUESTIONS:
+    print("Sending request")
+    try:
+        chat_completion = openai.ChatCompletion.create(
+            model=model,
+            messages=messages,
+        )
+        print("Request was successful")
+        content = chat_completion.choices[0].message.content
+    except Exception as e:
+        print("There was an issue fetching the API response:", e)
+        sys.exit(1)
 
-Question 1:
-What is the primary difference between sequential and concurrent programming?
-
-A: Sequential programming executes tasks one after the other in a linear order, while concurrent programming allows tasks to overlap and execute simultaneously.
-    Feedback: Correct. Sequential programming follows a strict linear order of execution, whereas concurrent programming allows for task overlap and simultaneous execution, leading to improved responsiveness and resource utilization.
-
-B: Sequential programming executes tasks simultaneously, while concurrent programming executes tasks in a linear order.
-    Feedback: Incorrect. Sequential programming does not involve simultaneous execution of tasks.
-
-C: There is no difference; sequential and concurrent programming refer to the same approach.
-    Feedback: Incorrect. Sequential and concurrent programming are distinct approaches with differences in execution order and task overlap.
-
-Question 2:
-Which programming approach is specifically designed to utilize multiple processor cores for faster execution of computationally intensive tasks?
-
-A: Sequential programming
-    Feedback: Incorrect. Sequential programming does not take advantage of multiple processor cores.
-
-B: Concurrent programming
-    Feedback: Incorrect. While concurrent programming can allow overlapping of tasks, it may not fully utilize the potential of multiple processor cores for faster execution of computationally intensive tasks.
-
-C: Parallel programming
-    Feedback: Correct. Parallel programming is specifically designed to leverage multiple processor cores, executing tasks simultaneously and achieving faster execution for computationally intensive tasks.
-
-Question 3:
-Consider the following code snippet:
-
-```go
-func main() {
-    go func() {
-        fmt.Println("Goroutine 1")
-    }()
-    
-    fmt.Println("Main function")
-}
-```
-
-What will be the output of the code?
-
-A: Goroutine 1
-    Feedback: Incorrect. The main function does not wait for the goroutine to finish executing before printing its output, so "Goroutine 1" may not be printed.
-
-B: Main function
-    Feedback: Correct. The main function executes before the goroutine, so "Main function" will be printed first.
-
-C: Goroutine 1, Main function
-    Feedback: Incorrect. The goroutine executes concurrently but may not necessarily complete before the main function. Therefore, "Goroutine 1" will not be printed before "Main function" in this specific code snippet.
-
-Note: While the code snippet in this question may not directly reflect concurrent or parallel programming concepts, it does introduce the idea of goroutines and asynchronous execution, which can lead to further discussions on concurrency in Go."""
+    return content
 
 #
 # Run script
 #
+# TODO fix all parameters to main()
 def main(unit="unit1", page_name="page2", dst_dir="course_content"):
     # Setup
     openai.api_key = get_openai_key()
-    messages = [{"role": "system", "content": system_role}]
 
     file_name = f"{unit.replace(' ', '_')}-{page_name.replace(' ', '_')}"
     file_path = f"{dst_dir}/{file_name}"
     page_header = f"Unit: {unit}\nPage_name: {page_name}\n\n"
 
-    # TODO: make sure folder exists
-
+    # TODO make sure folder exists
     with open(file_path, 'a') as file:
         file.write(page_header)    
 
-    # Initial prompt
-    questions_prompt_message = create_message("user", question_prompt(skill, number_of_questions))
+    # Generate questions
+    messages = [{"role": "system", "content": system_role}]
 
-    messages.append(questions_prompt_message)
-    # print("\nPrompt:\n\n", messages) # For debugging
+    questions = fetch_response_content(questions_prompt(skill, number_of_questions), messages)
+    # print(f"\n\nQuestions: \n\n{questions}") # For debugging
+    messages.append(create_message("assistant", questions))
 
-    # Initial questions
-    print("Questions prompt sent")
-    questions_response = get_response_from_api(model, messages)
-    questions_content = questions_response.choices[0].message.content
-    questions_message = create_message("assistant", questions_content)
+    critique_and_improved_questions = fetch_response_content(improvement_prompt(), messages)
+    # print(f"\n\nImproved questions: \n\n{improved_questions}") # For debugging
+    messages.append(create_message("assistant", critique_and_improved_questions))
 
-    messages.append(questions_message)
-    # print("\nQuestions:\n\n", messages) # For debugging
-
-    # Improvement prompt
-    improvement_prompt_message = create_message("user", improvement_prompt())
-
-    messages.append(improvement_prompt_message)
-    # print("\nImprovement prompt:\n\n", messages) # For debugging
-
-    # Improved questions
-    print("Improvement prompt sent")
-    improvement_response = get_response_from_api(model, messages)
-    improvement_content = improvement_response.choices[0].message.content
-    improvement_message = create_message("assistant", improvement_content)
-
-    messages.append(improvement_message)
-    # print("\nImproved questions:\n\n", messages) # For debugging
-
-    split_improvement = improvement_content.split("IMPROVED QUESTIONS:")
-
-    print(f"\n\nImproved split:\n\n{split_improvement}")
+    improved_questions_without_critique = critique_and_improved_questions.split("IMPROVED QUESTIONS:")[1].strip()
+    # print(f"\n\nImproved questions: \n\n{improved_questions_without_critique}") # For debugging
 
     # Save to file
     with open(file_path, 'a') as file:
-        questions = split_improvement[1].strip()
-        print(questions)
-        file.write(questions)
+        print(f"\nPrinting the following to {file_name}:\n\n{improved_questions_without_critique}")
+        file.write(improved_questions_without_critique)
 
     return file_name
 
