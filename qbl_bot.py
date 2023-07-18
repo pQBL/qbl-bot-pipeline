@@ -1,5 +1,6 @@
 import os
 import sys
+from typing import List, Dict, Optional
 import openai
 
 # GPT setup variables
@@ -16,21 +17,21 @@ skills = ["Understand and apply Golang fundamentals: Basic syntax",
 #
 # Helper functions
 #
-def get_openai_key():
+def get_openai_key() -> str:
     key = os.getenv("OPENAI_API_KEY") 
     if not key:
         raise ValueError("Environment variable OPENAI_API_KEY is not set.")
     return key
 
-def create_message(role, content):
+def create_message(role: str, content: str) -> Dict[str, str]:
     return {"role": role, "content": content}
 
 # Add prompt string to messages and return response string
-def fetch_response_content(prompt, messages):
+def fetch_response_content(prompt: str, messages: List[Dict[str, str]]) -> str:
     messages.append(create_message("user", prompt))
     content = ""
 
-    print("Sending request") # For debugging
+    print("\nSending request") # For debugging
     try:
         chat_completion = openai.ChatCompletion.create(
             model=model,
@@ -44,7 +45,7 @@ def fetch_response_content(prompt, messages):
 
     return content
 
-def questions_prompt(skill, number_of_questions):
+def questions_prompt(skill: str, number_of_questions: int) -> str:
     return f"""Your task is to create questions for a Question Based Learning (QBL) course.
 
     The course is an introduction to parallel and concurrent programming, and the programming language is Go / Golang. 
@@ -105,7 +106,7 @@ def questions_prompt(skill, number_of_questions):
 
     (Remember: Do not reveal the correct answer if an option is incorrect!)"""
 
-def improvement_prompt():
+def improvement_prompt() -> str:
     return """Your task is now to evaluate the questions by critiquing them thoroughly.
 
     First give an unordered bullet list of the critique. Focus on the things that would give the most improvement, not what is already good.
@@ -117,7 +118,7 @@ def improvement_prompt():
 #
 # Produce page file
 #
-def main(skills, unit, page_name, questions_per_skill=5, dst_dir="course_content"):
+def generate_page(unit: str, page_name: str, skills: List[str], questions_per_skill: int = 5, dst_dir: str = "course_content") -> Optional[str]:
     # Setup
     openai.api_key = get_openai_key()
 
@@ -157,4 +158,4 @@ def main(skills, unit, page_name, questions_per_skill=5, dst_dir="course_content
     return file_name
 
 if __name__ == "__main__":
-    main(skills, unit, page_name)
+    generate_page(unit, page_name, skills)
