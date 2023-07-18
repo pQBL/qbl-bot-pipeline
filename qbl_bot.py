@@ -165,7 +165,7 @@ def generate_page(unit: str, page_name: str, skills: List[str], questions_per_sk
     execution_time = end_time - start_time
     print(f"  Time to generate: {round(execution_time, 2)} seconds")
 
-    return file_name
+    return file_path
 
 # if __name__ == "__main__":
 #     generate_page(unit, page_name, skills)
