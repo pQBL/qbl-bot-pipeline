@@ -1,13 +1,7 @@
-import os
-import sys
+import os, sys, time, openai
 from typing import List, Dict, Optional
-import openai
 
-# GPT setup variables
-model = "gpt-3.5-turbo"
-system_role = "Your are a pedagogical professor in computer science, with 20+ years of experience."
-
-# Question variables
+# Dummy variables
 unit = "Week 1: Intro to Golang & Basic Concurrency"
 page_name = "Tour of Go 1 (Basics)"
 skills = ["Understand and apply Golang fundamentals: Basic syntax",
@@ -18,7 +12,7 @@ skills = ["Understand and apply Golang fundamentals: Basic syntax",
 # Helper functions
 #
 def get_openai_key() -> str:
-    key = os.getenv("OPENAI_API_KEY") 
+    key = os.getenv("OPENAI_API_KEY_KTH") 
     if not key:
         raise ValueError("Environment variable OPENAI_API_KEY is not set.")
     return key
@@ -27,17 +21,20 @@ def create_message(role: str, content: str) -> Dict[str, str]:
     return {"role": role, "content": content}
 
 # Add prompt string to messages and return response string
-def fetch_response_content(prompt: str, messages: List[Dict[str, str]]) -> str:
+def fetch_response_content(prompt: str, messages: List[Dict[str, str]], model: str = "gpt-3.5-turbo") -> str:
     messages.append(create_message("user", prompt))
     content = ""
 
-    print("\nSending request") # For debugging
+    print("  Sending API request") # For debugging
+    start_time = time.time()
     try:
         chat_completion = openai.ChatCompletion.create(
-            model=model,
-            messages=messages,
+            model = model,
+            messages = messages,
         )
-        print("Request was successful") # For debugging
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f"  API request was successful (took {round(execution_time, 2)} seconds)") # For debugging
         content = chat_completion.choices[0].message.content
     except Exception as e:
         print("There was an issue fetching the API response:", e)
@@ -116,9 +113,14 @@ def improvement_prompt() -> str:
     Mark the critique section with "CRITIQUE:" and the improved questions with "IMPROVED QUESTIONS:"."""
 
 #
-# Produce page file
+# Main function, generates a page file in the specified directory.
+# The 3.5 model is cheaper, but use "gpt-4" for better results.
 #
-def generate_page(unit: str, page_name: str, skills: List[str], questions_per_skill: int = 5, dst_dir: str = "course_content") -> Optional[str]:
+def generate_page(unit: str, page_name: str, skills: List[str], questions_per_skill: int = 5,
+                  dst_dir: str = "course_content", model="gpt-3.5-turbo") -> Optional[str]:
+    # Start timer
+    start_time = time.time()
+
     # Setup
     openai.api_key = get_openai_key()
 
@@ -136,14 +138,17 @@ def generate_page(unit: str, page_name: str, skills: List[str], questions_per_sk
         file.write(page_header)    
 
     # Produce questions
-    for skill in skills:
-        messages = [{"role": "system", "content": system_role}]
+    print(f"\nGenerating page \"{page_name}\"")
 
-        questions = fetch_response_content(questions_prompt(skill, questions_per_skill), messages)
+    for skill in skills:
+        context = "Your are a pedagogical professor in computer science, with 20+ years of experience."
+        messages = [{"role": "system", "content": context}]
+
+        questions = fetch_response_content(questions_prompt(skill, questions_per_skill), messages, model)
         # print(f"\n\nQuestions: \n\n{questions}") # For debugging
         messages.append(create_message("assistant", questions))
 
-        critique_and_improved_questions = fetch_response_content(improvement_prompt(), messages)
+        critique_and_improved_questions = fetch_response_content(improvement_prompt(), messages, model)
         # print(f"\n\nImproved questions: \n\n{improved_questions}") # For debugging
         messages.append(create_message("assistant", critique_and_improved_questions))
 
@@ -152,10 +157,15 @@ def generate_page(unit: str, page_name: str, skills: List[str], questions_per_sk
         # print(f"\n\nImproved questions: \n\n{improved_questions_without_critique}") # For debugging
 
         with open(file_path, 'a') as file:
-            print(f"\nPrinting the following to {file_name}:\n\n{improved_questions_without_critique}")
+            # print(f"\nPrinting the following to {file_name}:\n\n{improved_questions_without_critique}") # For debugging
             file.write(f"\n\n{improved_questions_without_critique}")
+
+    # Print total time taken to generate page
+    end_time = time.time()
+    execution_time = end_time - start_time
+    print(f"  Time to generate: {round(execution_time, 2)} seconds")
 
     return file_name
 
-if __name__ == "__main__":
-    generate_page(unit, page_name, skills)
+# if __name__ == "__main__":
+#     generate_page(unit, page_name, skills)
