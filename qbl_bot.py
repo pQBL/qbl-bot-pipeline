@@ -1,152 +1,171 @@
-import os
-import sys
-import openai
+import os, sys, time, openai
+from typing import List, Dict, Optional
 
-model = "gpt-3.5-turbo"
-system_role = "Your are a pedagogical professor in computer science, with 20+ years of experience."
-skill = "Understand the basics of concurrent, parallel, and sequential programming, and their differences."
-number_of_questions = 10
+# Dummy variables
+unit = "Week 1: Intro to Golang & Basic Concurrency"
+page_name = "Tour of Go 1 (Basics)"
+skills = ["Understand and apply Golang fundamentals: Basic syntax",
+          "Understand and apply Golang fundamentals: Types",
+          "Understand and apply Golang fundamentals: Control structures"]
 
 #
 # Helper functions
 #
-def get_openai_key():
-    key = os.getenv("OPENAI_API_KEY") 
+def get_openai_key() -> str:
+    key = os.getenv("OPENAI_API_KEY_KTH") 
     if not key:
         raise ValueError("Environment variable OPENAI_API_KEY is not set.")
     return key
 
-def create_message(role, content):
+def create_message(role: str, content: str) -> Dict[str, str]:
     return {"role": role, "content": content}
 
-def get_response_from_api(model, messages):
+# Add prompt string to messages and return response string
+def fetch_response_content(prompt: str, messages: List[Dict[str, str]], model: str = "gpt-3.5-turbo") -> str:
+    messages.append(create_message("user", prompt))
+    content = ""
+
+    print("  Sending API request") # For debugging
+    start_time = time.time()
     try:
         chat_completion = openai.ChatCompletion.create(
-            model=model,
-            messages=messages,
-            # temperature=0.1
+            model = model,
+            messages = messages,
         )
-        return chat_completion
+        end_time = time.time()
+        execution_time = end_time - start_time
+        print(f"  API request was successful (took {round(execution_time, 2)} seconds)") # For debugging
+        content = chat_completion.choices[0].message.content
     except Exception as e:
         print("There was an issue fetching the API response:", e)
         sys.exit(1)
 
-def write_response(destination, data):
-    with open(destination, 'a') as file:
-        file.write("\n\n--- NEW RESPONSE ---\n\n")
-        file.write(data)
-    return
+    return content
 
-#
-# Prompt functions
-#
-def question_prompt(skill, number_of_questions):
+def questions_prompt(skill: str, number_of_questions: int) -> str:
     return f"""Your task is to create questions for a Question Based Learning (QBL) course.
 
-        The course is an introduction to parallel and concurrent programming, and the programming language is Go / Golang. 
+    The course is an introduction to parallel and concurrent programming, and the programming language is Go / Golang. 
 
-        Assume students have some programming experience in another language, such as Java or Python.
+    Assume students have some programming experience in another language, such as Java or Python.
 
-        Summary of QBL: ###
-        QBL is about learning through answering questions. The focus is on learning, not evaluation.
+    Summary of QBL: ###
+    QBL is about learning through answering questions. The focus is on learning, not evaluation.
 
-        The underlying philosophy is: "If you know the answer to all the questions from the start, it would mean you had nothing to learn from the course."
+    The underlying philosophy is: "If you know the answer to all the questions from the start, it would mean you had nothing to learn from the course."
 
-        A course consists of learning goals.
-        Learning goals consist of skills.
-        Skills consist of questions.
+    A course consists of learning goals.
+    Learning goals consist of skills.
+    Skills consist of questions.
 
-        Questions consist of:
-        1. The actual question
-        2. Answer options
-        3. Tailored feedback for each option
+    Questions consist of:
+    1. The actual question
+    2. Answer options
+    3. Tailored feedback for each option
 
-        Good questions should:
-        * be easy to understand
-        * focus on common misconceptions regarding the subject
-        * encourage independent thinking ("understanding" or higher in Bloom's taxonomy)
+    Good questions should:
+    * be easy to understand
+    * focus on common misconceptions regarding the subject
+    * encourage independent thinking ("understanding" or higher in Bloom's taxonomy)
 
-        Good options should:
-        * be easy to read (short and concise)
-        * be reasonable and appropriate in context
-        * be given in sets of three (or more, but three is optimal)
+    Good options should:
+    * be easy to read (short and concise)
+    * be reasonable and appropriate in context
+    * be given in sets of three (or more, but three is optimal)
 
-        Good feedback should:
-        * begin with "Correct." or "Incorrect." as appropriate
-        * be short (about two sentences) and constructive
-        * provide a unique explanation for each option (including the correct one)
-        * guide the student in the right direction when the option is incorrect
-        * only reveal the answer for the correct option(!)
-        ###
+    Good feedback should:
+    * begin with "Correct." or "Incorrect." as appropriate
+    * be short (about two sentences) and constructive
+    * provide a unique explanation for each option (including the correct one)
+    * guide the student in the right direction when the option is incorrect
+    * only reveal the answer for the correct option(!)
+    ###
 
-        Question format: ###
-        **Question 1:**
-        <question>
+    Question format: ###
+    Question 1:
+    <question>
 
-        **Options:**
-        **A)** <plausible answer option>
-        **B)** <plausible answer option>
-        **C)** <plausible answer option>
+    A: <plausible answer option>
+    <tab>Feedback: <unique feedback tailored to A), that does not reveal the answer if incorrect>
 
-        **Feedback:**
-        **A)** <unique feedback tailored to A), that does not reveal the answer if incorrect>
-        **B)** <unique feedback tailored to B), that does not reveal the answer if incorrect>
-        **C)** <unique feedback tailored to C), that does not reveal the answer if incorrect>
-        ###
+    B: <plausible answer option>
+    Feedback: <unique feedback tailored to B), that does not reveal the answer if incorrect>
 
-        Begin by generating a short but informative knowledge bank about the skill, with the most essential information.
+    C: <plausible answer option>
+    Feedback: <unique feedback tailored to C), that does not reveal the answer if incorrect>
+    ###
 
-        Skill: ###{skill}###
+    Begin by generating a short but informative knowledge bank about the skill, with the most essential information.
 
-        End by generating {number_of_questions} questions of varying difficulty, and provide code snippets to make it more interesting.
+    Skill: ###{skill}###
 
-        (Remember: Do not reveal the correct answer if an option is incorrect!)"""
+    End by generating {number_of_questions} questions of varying difficulty, and provide code snippets to make it more interesting.
 
-def improvement_prompt():
+    (Remember: Do not reveal the correct answer if an option is incorrect!)"""
+
+def improvement_prompt() -> str:
     return """Your task is now to evaluate the questions by critiquing them thoroughly.
 
-        First give a bullet list of the critique. Focus on the things that would give the most improvement, not what is already good.
+    First give an unordered bullet list of the critique. Focus on the things that would give the most improvement, not what is already good.
 
-        Then, improve the questions based on the list."""
+    Then, improve the questions based on the list.
+
+    Mark the critique section with "CRITIQUE:" and the improved questions with "IMPROVED QUESTIONS:"."""
 
 #
-# Run script
+# Main function, generates a page file in the specified directory.
+# The 3.5 model is cheaper, but use "gpt-4" for better results.
 #
-def main():
+def generate_page(unit: str, page_name: str, skills: List[str], questions_per_skill: int = 5,
+                  dst_dir: str = "course_content", model="gpt-3.5-turbo") -> Optional[str]:
+    # Start timer
+    start_time = time.time()
+
     # Setup
     openai.api_key = get_openai_key()
-    messages = [{"role": "system", "content": system_role}]
-    
-    # Initial prompt
-    questions_prompt_message = create_message("user", question_prompt(skill, number_of_questions))
 
-    messages.append(questions_prompt_message)
-    print("\nPrompt:\n\n", messages) # For debugging
+    unit = unit.replace(' ', '_').lower()
+    page_name = page_name.replace(' ', '_').lower()
 
-    # Initial questions
-    questions_response = get_response_from_api(model, messages)
-    questions_content = questions_response.choices[0].message.content
-    questions_message = create_message("assistant", questions_content)
+    file_name = f"{unit}-{page_name}"
+    file_path = f"{dst_dir}/{file_name}"
+    page_header = f"\n\nUnit: {unit}\nPage_name: {page_name}"
 
-    messages.append(questions_message)
-    print("\nQuestions:\n\n", messages) # For debugging
+    if not os.path.exists(dst_dir):
+        os.makedirs(dst_dir)
 
-    # Improvement prompt
-    improvement_prompt_message = create_message("user", improvement_prompt())
+    with open(file_path, 'a') as file:
+        file.write(page_header)    
 
-    messages.append(improvement_prompt_message)
-    print("\nImprovement prompt:\n\n", messages) # For debugging
+    # Produce questions
+    print(f"\nGenerating page \"{page_name}\"")
 
-    # Improved questions
-    improvement_response = get_response_from_api(model, messages)
-    improvement_content = improvement_response.choices[0].message.content
-    improvement_message = create_message("assistant", improvement_content)
+    for skill in skills:
+        context = "Your are a pedagogical professor in computer science, with 20+ years of experience."
+        messages = [{"role": "system", "content": context}]
 
-    messages.append(improvement_message)
-    print("\nImproved questions:\n\n", messages) # For debugging
+        questions = fetch_response_content(questions_prompt(skill, questions_per_skill), messages, model)
+        # print(f"\n\nQuestions: \n\n{questions}") # For debugging
+        messages.append(create_message("assistant", questions))
 
-    # Save to file
-    write_response("response.md", improvement_content)
+        critique_and_improved_questions = fetch_response_content(improvement_prompt(), messages, model)
+        # print(f"\n\nImproved questions: \n\n{improved_questions}") # For debugging
+        messages.append(create_message("assistant", critique_and_improved_questions))
 
-if __name__ == "__main__":
-    main()
+        # Remove critique by splitting after the critique and selecting the second part of the split
+        improved_questions_without_critique = critique_and_improved_questions.split("IMPROVED QUESTIONS:")[1].strip()
+        # print(f"\n\nImproved questions: \n\n{improved_questions_without_critique}") # For debugging
+
+        with open(file_path, 'a') as file:
+            # print(f"\nPrinting the following to {file_name}:\n\n{improved_questions_without_critique}") # For debugging
+            file.write(f"\n\n{improved_questions_without_critique}")
+
+    # Print total time taken to generate page
+    end_time = time.time()
+    execution_time = end_time - start_time
+    print(f"  Time to generate: {round(execution_time, 2)} seconds")
+
+    return file_name
+
+# if __name__ == "__main__":
+#     generate_page(unit, page_name, skills)
