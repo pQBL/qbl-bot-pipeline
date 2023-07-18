@@ -2,10 +2,16 @@ import os
 import sys
 import openai
 
+# GPT setup variables
 model = "gpt-3.5-turbo"
 system_role = "Your are a pedagogical professor in computer science, with 20+ years of experience."
-skill = "Understand the basics of concurrent, parallel, and sequential programming, and their differences."
-number_of_questions = 5
+
+# Question variables
+unit = "Week 1: Intro to Golang & Basic Concurrency"
+page_name = "Tour of Go 1 (Basics)"
+skills = ["Understand and apply Golang fundamentals: Basic syntax",
+          "Understand and apply Golang fundamentals: Types",
+          "Understand and apply Golang fundamentals: Control structures"]
 
 #
 # Helper functions
@@ -19,27 +25,25 @@ def get_openai_key():
 def create_message(role, content):
     return {"role": role, "content": content}
 
-def get_response_from_api(model, messages):
+# Add prompt string to messages and return response string
+def fetch_response_content(prompt, messages):
+    messages.append(create_message("user", prompt))
+    content = ""
+
+    print("Sending request") # For debugging
     try:
         chat_completion = openai.ChatCompletion.create(
             model=model,
             messages=messages,
-            # temperature=0.1
         )
-        return chat_completion
+        print("Request was successful") # For debugging
+        content = chat_completion.choices[0].message.content
     except Exception as e:
         print("There was an issue fetching the API response:", e)
         sys.exit(1)
 
-# def write_response(destination, data):
-#     with open(destination, 'a') as file:
-#         file.write("\n\n--- NEW RESPONSE ---\n\n")
-#         file.write(data)
-#     return
+    return content
 
-#
-# Prompt functions
-#
 def questions_prompt(skill, number_of_questions):
     return f"""Your task is to create questions for a Question Based Learning (QBL) course.
 
@@ -110,62 +114,47 @@ def improvement_prompt():
 
     Mark the critique section with "CRITIQUE:" and the improved questions with "IMPROVED QUESTIONS:"."""
 
-
-# Add prompt to messages and get response content
-def fetch_response_content(prompt, messages):
-    messages.append(create_message("user", prompt))
-    content = ""
-
-    print("Sending request")
-    try:
-        chat_completion = openai.ChatCompletion.create(
-            model=model,
-            messages=messages,
-        )
-        print("Request was successful")
-        content = chat_completion.choices[0].message.content
-    except Exception as e:
-        print("There was an issue fetching the API response:", e)
-        sys.exit(1)
-
-    return content
-
 #
-# Run script
+# Produce page file
 #
-# TODO fix all parameters to main()
-def main(unit="unit1", page_name="page2", dst_dir="course_content"):
+def main(skills, unit, page_name, questions_per_skill=5, dst_dir="course_content"):
     # Setup
     openai.api_key = get_openai_key()
 
-    file_name = f"{unit.replace(' ', '_')}-{page_name.replace(' ', '_')}"
-    file_path = f"{dst_dir}/{file_name}"
-    page_header = f"Unit: {unit}\nPage_name: {page_name}\n\n"
+    unit = unit.replace(' ', '_').lower()
+    page_name = page_name.replace(' ', '_').lower()
 
-    # TODO make sure folder exists
+    file_name = f"{unit}-{page_name}"
+    file_path = f"{dst_dir}/{file_name}"
+    page_header = f"\n\nUnit: {unit}\nPage_name: {page_name}"
+
+    if not os.path.exists(dst_dir):
+        os.makedirs(dst_dir)
+
     with open(file_path, 'a') as file:
         file.write(page_header)    
 
-    # Generate questions
-    messages = [{"role": "system", "content": system_role}]
+    # Produce questions
+    for skill in skills:
+        messages = [{"role": "system", "content": system_role}]
 
-    questions = fetch_response_content(questions_prompt(skill, number_of_questions), messages)
-    # print(f"\n\nQuestions: \n\n{questions}") # For debugging
-    messages.append(create_message("assistant", questions))
+        questions = fetch_response_content(questions_prompt(skill, questions_per_skill), messages)
+        # print(f"\n\nQuestions: \n\n{questions}") # For debugging
+        messages.append(create_message("assistant", questions))
 
-    critique_and_improved_questions = fetch_response_content(improvement_prompt(), messages)
-    # print(f"\n\nImproved questions: \n\n{improved_questions}") # For debugging
-    messages.append(create_message("assistant", critique_and_improved_questions))
+        critique_and_improved_questions = fetch_response_content(improvement_prompt(), messages)
+        # print(f"\n\nImproved questions: \n\n{improved_questions}") # For debugging
+        messages.append(create_message("assistant", critique_and_improved_questions))
 
-    improved_questions_without_critique = critique_and_improved_questions.split("IMPROVED QUESTIONS:")[1].strip()
-    # print(f"\n\nImproved questions: \n\n{improved_questions_without_critique}") # For debugging
+        # Remove critique by splitting after the critique and selecting the second part of the split
+        improved_questions_without_critique = critique_and_improved_questions.split("IMPROVED QUESTIONS:")[1].strip()
+        # print(f"\n\nImproved questions: \n\n{improved_questions_without_critique}") # For debugging
 
-    # Save to file
-    with open(file_path, 'a') as file:
-        print(f"\nPrinting the following to {file_name}:\n\n{improved_questions_without_critique}")
-        file.write(improved_questions_without_critique)
+        with open(file_path, 'a') as file:
+            print(f"\nPrinting the following to {file_name}:\n\n{improved_questions_without_critique}")
+            file.write(f"\n\n{improved_questions_without_critique}")
 
     return file_name
 
 if __name__ == "__main__":
-    main()
+    main(skills, unit, page_name)
