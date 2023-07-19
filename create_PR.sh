@@ -22,7 +22,7 @@ git config --global user.email "qblbot@example.com"
 
 git pull
 git checkout -b $branch_name
-git add $file_path
+git add $file_name
 git commit -m "Create $file_name"
 git push -u origin $branch_name
 gh pr create --title $PR_title --body ""
