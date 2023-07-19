@@ -17,6 +17,10 @@ def get_openai_key() -> str:
         raise ValueError("Environment variable OPENAI_API_KEY is not set.")
     return key
 
+# Filter out the chars in the given string
+def filter_chars(string: str, chars_to_remove: str) -> str:
+    return string.translate(str.maketrans("", "", chars_to_remove))
+
 def create_message(role: str, content: str) -> Dict[str, str]:
     return {"role": role, "content": content}
 
@@ -116,7 +120,7 @@ def improvement_prompt() -> str:
 # Main function, generates a page file in the specified directory.
 # The 3.5 model is cheaper, but use "gpt-4" for better results.
 #
-def generate_page(unit: str, page_name: str, skills: List[str], questions_per_skill: int = 5,
+def generate_page(unit_name: str, page_name: str, skills: List[str], questions_per_skill: int = 5,
                   dst_dir: str = "course_content", model="gpt-3.5-turbo") -> Optional[str]:
     # Start timer
     start_time = time.time()
@@ -124,12 +128,15 @@ def generate_page(unit: str, page_name: str, skills: List[str], questions_per_sk
     # Setup
     openai.api_key = get_openai_key()
 
-    unit = unit.replace(' ', '_').lower()
-    page_name = page_name.replace(' ', '_').lower()
+    unit_name_underscored = unit_name.replace(' ', '_').lower()
+    page_name_underscored = page_name.replace(' ', '_').lower()
 
-    file_name = f"{unit}-{page_name}"
+    file_name = f"{unit_name_underscored}-{page_name_underscored}"
     file_path = f"{dst_dir}/{file_name}"
-    page_header = f"\n\nUnit: {unit}\nPage_name: {page_name}"
+    page_header = f"\n\nUnit: {unit_name}\nPage_name: {page_name}"
+
+    illegal_chars_for_git_branch_names = r"~^:\*?[]@{}!"
+    file_name = filter_chars(file_name, illegal_chars_for_git_branch_names)
 
     if not os.path.exists(dst_dir):
         os.makedirs(dst_dir)
