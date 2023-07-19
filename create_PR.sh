@@ -25,7 +25,7 @@ git checkout -b $branch_name
 git add $file_name
 git commit -m "Create $file_name"
 git push -u origin $branch_name
-gh pr create --title $PR_title --body ""
+gh pr create --title "$PR_title" --body ""
 
 echo "Pull request successfully created with title: $PR_title"
 
