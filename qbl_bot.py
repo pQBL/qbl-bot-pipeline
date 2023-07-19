@@ -136,7 +136,9 @@ def generate_page(unit_name: str, page_name: str, skills: List[str], questions_p
     page_header = f"\n\nUnit: {unit_name}\nPage_name: {page_name}"
 
     illegal_chars_for_git_branch_names = r"~^:\*?[]@{}!"
-    file_name = filter_chars(file_name, illegal_chars_for_git_branch_names)
+
+    for c in illegal_chars_for_git_branch_names:
+        file_path = file_path.replace(c, '')
 
     if not os.path.exists(dst_dir):
         os.makedirs(dst_dir)
