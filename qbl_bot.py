@@ -49,72 +49,74 @@ def fetch_response_content(prompt: str, messages: List[Dict[str, str]], model: s
 def questions_prompt(skill: str, number_of_questions: int) -> str:
     return f"""Your task is to create questions for a Question Based Learning (QBL) course.
 
-    The course is an introduction to parallel and concurrent programming, and the programming language is Go / Golang. 
+The course is an introduction to parallel and concurrent programming, and the programming language is Go / Golang. 
 
-    Assume students have some programming experience in another language, such as Java or Python.
+Assume students have some programming experience in another language, such as Java or Python.
 
-    Summary of QBL: ###
-    QBL is about learning through answering questions. The focus is on learning, not evaluation.
+Summary of QBL: ###
+QBL is about learning through answering questions. The focus is on learning, not evaluation.
 
-    The underlying philosophy is: "If you know the answer to all the questions from the start, it would mean you had nothing to learn from the course."
+The underlying philosophy is: "If you know the answer to all the questions from the start, it would mean you had nothing to learn from the course."
 
-    A course consists of learning goals.
-    Learning goals consist of skills.
-    Skills consist of questions.
+A course consists of learning goals.
+Learning goals consist of skills.
+Skills consist of questions.
 
-    Questions consist of:
-    1. The actual question
-    2. Answer options
-    3. Tailored feedback for each option
+Questions consist of:
+1. The actual question
+2. Answer options
+3. Tailored feedback for each option
 
-    Good questions should:
-    * be easy to understand
-    * focus on common misconceptions regarding the subject
-    * encourage independent thinking ("understanding" or higher in Bloom's taxonomy)
+Good questions should:
+* be easy to understand
+* focus on common misconceptions regarding the subject
+* encourage independent thinking ("understanding" or higher in Bloom's taxonomy)
 
-    Good options should:
-    * be easy to read (short and concise)
-    * be reasonable and appropriate in context
-    * be given in sets of three (or more, but three is optimal)
+Good options should:
+* be easy to read (short and concise)
+* be reasonable and appropriate in context
+* be given in sets of three (or more, but three is optimal)
 
-    Good feedback should:
-    * begin with "Correct." or "Incorrect." as appropriate
-    * be short (about two sentences) and constructive
-    * provide a unique explanation for each option (including the correct one)
-    * guide the student in the right direction when the option is incorrect
-    * only reveal the answer for the correct option(!)
-    ###
+Good feedback should:
+* begin with "Correct." or "Incorrect." as appropriate
+* be short (about two sentences) and constructive
+* provide a unique explanation for each option (including the correct one)
+* guide the student in the right direction when the option is incorrect
+* only reveal the answer for the correct option(!)
+###
 
-    Question format: ###
-    Question 1:
-    <question>
+Each entry should be a question with answer alternatives and each answer alternative should have feedback attached as a subpoint. This should be provided in a list format.
 
-    A: <plausible answer option>
-    <tab>Feedback: <unique feedback tailored to A), that does not reveal the answer if incorrect>
+Example question: ###
+1. Why is Go considered a good language for concurrent programming?
 
-    B: <plausible answer option>
-    Feedback: <unique feedback tailored to B), that does not reveal the answer if incorrect>
+    A) Because it allows direct manipulation of memory addresses.
+    - Incorrect. Direct memory manipulation is not directly related to Go's suitability for concurrent programming. Go's strength in concurrent programming lies in its features like goroutines and channels.
+        
+    B) Because it has built-in support for lightweight threads (goroutines) and communication between these threads (channels).
+    - Correct. Go provides robust support for concurrent programming through its goroutines, which are lightweight threads, and channels, which are used for communication between these goroutines.
 
-    C: <plausible answer option>
-    Feedback: <unique feedback tailored to C), that does not reveal the answer if incorrect>
-    ###
+    C) Because it uses Java Virtual Machine (JVM) for concurrency.
+    - Incorrect. Go does not use the JVM. It has its own runtime which manages goroutines, its approach to concurrent programming.
+###
 
-    Begin by generating a short but informative knowledge bank about the skill, with the most essential information.
 
-    Skill: ###{skill}###
+Begin by generating a short but informative knowledge bank about the skill, with the most essential information.
 
-    End by generating {number_of_questions} questions of varying difficulty, and provide code snippets to make it more interesting.
+Skill: ###{skill}###
 
-    (Remember: Do not reveal the correct answer if an option is incorrect!)"""
+End by generating {number_of_questions} questions of varying difficulty, and provide code snippets to make it more interesting.
+
+(Remember: Do not reveal the correct answer if an option is incorrect!)"""
 
 def improvement_prompt() -> str:
     return """Your task is now to evaluate the questions by critiquing them thoroughly.
 
-    First give an unordered bullet list of the critique. Focus on the things that would give the most improvement, not what is already good.
+First give an unordered bullet list of the critique. Focus on the things that would give the most improvement, not what is already good.
 
-    Then, improve the questions based on the list.
+Then, improve the questions based on the list.
 
-    Mark the critique section with "CRITIQUE:" and the improved questions with "IMPROVED QUESTIONS:"."""
+Mark the critique section with "CRITIQUE:" and the improved questions with "IMPROVED QUESTIONS:"."""
 
 #
 # Main function, generates a page file in the specified directory.
