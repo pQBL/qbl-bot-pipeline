@@ -18,7 +18,7 @@ def create_pages(skillmap_path, dst_dir):
             page = unit[page_key]
             page_name = page['page_name']
             skills = page['skills']
-            created_page_path = qbl_bot.main(skills, unit_name, page_name, questions_per_skill, dst_dir)
+            created_page_path = qbl_bot.generate_page(unit_name, page_name, skills, questions_per_skill, dst_dir)
             subprocess.run(["bash", "create_PR.sh", created_page_path], check=True)
             page_count += 1
 
