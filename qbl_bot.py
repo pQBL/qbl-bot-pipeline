@@ -135,7 +135,7 @@ def generate_page(unit_name: str, page_name: str, skills: List[str], questions_p
 
     file_name = f"{unit_name_underscored}-{page_name_underscored}"
     file_path = f"{dst_dir}/{file_name}"
-    page_header = f"\n\nUnit: {unit_name}\nPage_name: {page_name}"
+    page_header = f"Unit_name: {unit_name}\nPage_name: {page_name}"
 
     illegal_chars_for_git_branch_names = r"~^:\*?[]@{}!"
 
