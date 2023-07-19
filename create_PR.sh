@@ -15,7 +15,7 @@ dir_name=$(dirname "$file_path")
 branch_name="create-page-$file_name"
 PR_title="Create page $file_name in torus"
 
-cd dir_name
+cd $dir_name
 
 git config --global user.name "QBL bot"
 git config --global user.email "qblbot@example.com"
