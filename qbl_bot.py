@@ -125,10 +125,10 @@ In the final output, make sure to separate the end of one question from the begi
 
 #
 # Main function, generates a page file in the specified directory.
-# The 3.5 model is cheaper, but use "gpt-4" for better results.
+# "gpt-3.5-turbo" is cheaper, but use "gpt-4" for better results.
 #
 def generate_page(unit_name: str, page_name: str, skills: List[str], questions_per_skill: int = 5,
-                  dst_dir: str = "course_content", model="gpt-3.5-turbo") -> Optional[str]:
+                  dst_dir: str = "course_content", model="gpt-4") -> Optional[str]:
     # Start timer
     start_time = time.time()
 
@@ -161,19 +161,15 @@ def generate_page(unit_name: str, page_name: str, skills: List[str], questions_p
         messages = [{"role": "system", "content": context}]
 
         questions = fetch_response_content(questions_prompt(skill, questions_per_skill), messages, model)
-        # print(f"\n\nQuestions: \n\n{questions}") # For debugging
         messages.append(create_message("assistant", questions))
 
         critique_and_improved_questions = fetch_response_content(improvement_prompt(), messages, model)
-        # print(f"\n\nImproved questions: \n\n{improved_questions}") # For debugging
         messages.append(create_message("assistant", critique_and_improved_questions))
 
         # Remove critique by splitting after the critique and selecting the second part of the split
         improved_questions_without_critique = critique_and_improved_questions.split("IMPROVED QUESTIONS:")[1].strip()
-        # print(f"\n\nImproved questions: \n\n{improved_questions_without_critique}") # For debugging
 
         with open(file_path, 'a') as file:
-            # print(f"\nPrinting the following to {file_name}:\n\n{improved_questions_without_critique}") # For debugging
             file.write(f"\n\n{improved_questions_without_critique}")
 
     # Print total time taken to generate page
