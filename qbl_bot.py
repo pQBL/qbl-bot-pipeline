@@ -53,6 +53,8 @@ The course is an introduction to parallel and concurrent programming, and the pr
 
 Assume students have some programming experience in another language, such as Java or Python.
 
+You will be given contextual information wrapped in triple hash-symbols (###).
+
 Summary of QBL: ###
 QBL is about learning through answering questions. The focus is on learning, not evaluation.
 
@@ -75,7 +77,7 @@ Good questions should:
 Good options should:
 * be easy to read (short and concise)
 * be reasonable and appropriate in context
-* be given in sets of three (or more, but three is optimal)
+* be given in sets of three
 
 Good feedback should:
 * begin with "Correct." or "Incorrect." as appropriate
@@ -87,25 +89,26 @@ Good feedback should:
 
 Each entry should be a question with answer alternatives and each answer alternative should have feedback attached as a subpoint. This should be provided in a list format.
 
-Example question: ###
-1. Why is Go considered a good language for concurrent programming?
+Question format: ###
+<question number, a single digit starting with 1>. <question>
 
-    A) Because it allows direct manipulation of memory addresses.
-    - Incorrect. Direct memory manipulation is not directly related to Go's suitability for concurrent programming. Go's strength in concurrent programming lies in its features like goroutines and channels.
-        
-    B) Because it has built-in support for lightweight threads (goroutines) and communication between these threads (channels).
-    - Correct. Go provides robust support for concurrent programming through its goroutines, which are lightweight threads, and channels, which are used for communication between these goroutines.
+    A) <plausible answer option>
+    - <unique feedback tailored to A), that does not reveal the answer if incorrect>
+  
+    B)  <plausible answer option>
+    - <unique feedback tailored to B), that does not reveal the answer if incorrect>
 
-    C) Because it uses Java Virtual Machine (JVM) for concurrency.
-    - Incorrect. Go does not use the JVM. It has its own runtime which manages goroutines, its approach to concurrent programming.
+    C)  <plausible answer option>
+    - <unique feedback tailored to C), that does not reveal the answer if incorrect>
 ###
-
 
 Begin by generating a short but informative knowledge bank about the skill, with the most essential information.
 
 Skill: ###{skill}###
 
 End by generating {number_of_questions} questions of varying difficulty, and provide code snippets to make it more interesting.
+
+Format inline code as monospace.
 
 (Remember: Do not reveal the correct answer if an option is incorrect!)"""
 
@@ -116,7 +119,9 @@ First give an unordered bullet list of the critique. Focus on the things that wo
 
 Then, improve the questions based on the list.
 
-Mark the critique section with "CRITIQUE:" and the improved questions with "IMPROVED QUESTIONS:"."""
+Mark the critique section with "CRITIQUE:" and the improved questions with "IMPROVED QUESTIONS:".
+
+In the final output, make sure to separate the end of one question from the beginning of another with 2 blank lines (2 line breaks)."""
 
 #
 # Main function, generates a page file in the specified directory.
