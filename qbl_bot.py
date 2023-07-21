@@ -18,26 +18,36 @@ def create_message(role: str, content: str) -> Dict[str, str]:
     return {"role": role, "content": content}
 
 # Add prompt string to messages and return response string
-def fetch_response_content(prompt: str, messages: List[Dict[str, str]], model: str = "gpt-3.5-turbo") -> str:
+def fetch_response_content(prompt: str, messages: List[Dict[str, str]], model: str, max_try_count: int = 2) -> str:
     messages.append(create_message("user", prompt))
     content = ""
 
-    print("  Sending API request") # For debugging
-    start_time = time.time()
-    try:
-        chat_completion = openai.ChatCompletion.create(
-            model = model,
-            messages = messages,
-        )
-        end_time = time.time()
-        execution_time = end_time - start_time
-        print(f"  API request was successful (took {round(execution_time, 2)} seconds)") # For debugging
-        content = chat_completion.choices[0].message.content
-    except Exception as e:
-        print("There was an issue fetching the API response:", e)
-        sys.exit(1)
+    try_count = 0
+
+    while try_count <= max_try_count:
+        print("\n  Sending API request")  # For debugging
+        start_time = time.time()
+        try:
+            chat_completion = openai.ChatCompletion.create(
+                model=model,
+                messages=messages,
+            )
+            end_time = time.time()
+            execution_time = end_time - start_time
+            print(f"  Request was successful (took {round(execution_time, 2)} seconds)")  # For debugging
+            content = chat_completion.choices[0].message.content
+            break
+        except Exception as e:
+            try_count += 1
+            print(f"  Attempt {try_count} of {max_try_count} failed\n  {e}")
+            if try_count >= max_try_count:
+                raise Exception(f"\n  (skipping page)")
+            number_of_seconds_between_requests = 5
+            print(f"  Waiting {number_of_seconds_between_requests} seconds before next request")
+            time.sleep(number_of_seconds_between_requests)
 
     return content
+
 
 def questions_prompt(skill: str, number_of_questions: int) -> str:
     return f"""Your task is to create questions for a Question Based Learning (QBL) course.
@@ -147,27 +157,37 @@ def generate_page(unit_name: str, page_name: str, skills: List[str], questions_p
         file.write(page_header)    
 
     # Produce questions
-    print(f"\nGenerating page \"{page_name}\"")
+    print(f"\nGenerating page: \"{page_name}\"")
+    print(f"Using GPT model: \"{model}\"")
 
-    for skill in skills:
-        context = "Your are a pedagogical professor in computer science, with 20+ years of experience."
-        messages = [{"role": "system", "content": context}]
+    try: 
+        for skill in skills:
+            context = "Your are a pedagogical professor in computer science, with 20+ years of experience."
+            messages = [{"role": "system", "content": context}]
 
-        questions = fetch_response_content(questions_prompt(skill, questions_per_skill), messages, model)
-        messages.append(create_message("assistant", questions))
+            questions = fetch_response_content(questions_prompt(skill, questions_per_skill), messages, model)
+            messages.append(create_message("assistant", questions))
 
-        critique_and_improved_questions = fetch_response_content(improvement_prompt(), messages, model)
-        messages.append(create_message("assistant", critique_and_improved_questions))
+            critique_and_improved_questions = fetch_response_content(improvement_prompt(), messages, model)
+            messages.append(create_message("assistant", critique_and_improved_questions))
 
-        # Remove critique by splitting after the critique and selecting the second part of the split
-        improved_questions_without_critique = critique_and_improved_questions.split("IMPROVED QUESTIONS:")[1].strip()
+            # Remove critique by splitting after the critique and selecting the second part of the split
+            improved_questions_without_critique = critique_and_improved_questions.split("IMPROVED QUESTIONS:")[1].strip()
 
-        with open(file_path, 'a') as file:
-            file.write(f"\n\n{improved_questions_without_critique}")
+            # Append to file
+            with open(file_path, 'a') as file:
+                file.write(f"\n\n{improved_questions_without_critique}")
+    except Exception as e:
+        print(e)
+        # Overwrite file and return
+        with open(file_path, 'w') as file:
+            file.write(f"REQUEST FAILED")
+        return file_path
+
 
     # Print total time taken to generate page
     end_time = time.time()
     execution_time = end_time - start_time
-    print(f"  Time to generate: {round(execution_time, 2)} seconds")
+    print(f"\n  TIME TO GENERATE PAGE = {round(execution_time, 2)} seconds")
 
     return file_path
