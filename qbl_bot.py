@@ -1,13 +1,6 @@
 import os, sys, time, openai
 from typing import List, Dict, Optional
 
-# Dummy variables
-unit = "Week 1: Intro to Golang & Basic Concurrency"
-page_name = "Tour of Go 1 (Basics)"
-skills = ["Understand and apply Golang fundamentals: Basic syntax",
-          "Understand and apply Golang fundamentals: Types",
-          "Understand and apply Golang fundamentals: Control structures"]
-
 #
 # Helper functions
 #
@@ -127,7 +120,7 @@ In the final output, make sure to separate the end of one question from the begi
 # Main function, generates a page file in the specified directory.
 # "gpt-3.5-turbo" is cheaper, but use "gpt-4" for better results.
 #
-def generate_page(unit_name: str, page_name: str, skills: List[str], questions_per_skill: int = 5,
+def generate_page(unit_name: str, page_name: str, skills: List[str], questions_per_skill: int = 10,
                   dst_dir: str = "course_content", model="gpt-4") -> Optional[str]:
     # Start timer
     start_time = time.time()
@@ -178,6 +171,3 @@ def generate_page(unit_name: str, page_name: str, skills: List[str], questions_p
     print(f"  Time to generate: {round(execution_time, 2)} seconds")
 
     return file_path
-
-# if __name__ == "__main__":
-#     generate_page(unit, page_name, skills)
