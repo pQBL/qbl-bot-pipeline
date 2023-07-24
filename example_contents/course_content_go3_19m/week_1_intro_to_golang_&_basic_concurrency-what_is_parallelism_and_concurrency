@@ -1,0 +1,112 @@
+Unit_name: Week 1: Intro to Golang & Basic Concurrency
+Page_name: What is parallelism and concurrency?
+
+1. Which of the following operations could be improved with concurrency?
+
+    A) Calculating square roots of an array of integers
+    - Incorrect. Calculating square roots is a CPU-bound operation that does not benefit significantly from introducing concurrency.
+
+    B) Fetching multiple web pages at the same time
+    - Correct. Fetching multiple web pages at the same time involves making multiple network calls simultaneously, which can be sped up with concurrency.
+
+    C) Calculating the nth prime number
+    - Incorrect. Calculating the nth prime number is a process that heavily relies on the outcomes of previous steps, making concurrency less effective.
+
+2. What is a goroutine in Go?
+
+    A) An implementation of a binary search tree
+    - Incorrect. A goroutine is not a data structure like a binary search tree. It's more closely related to processes and threads in the Go language.
+
+    B) A library to control GPIO pins on Raspberry Pi
+    - Incorrect. A goroutine is not a library dedicated to a specific hardware or platform. It is a built-in feature of the Golang language to handle concurrency.
+
+    C) A lightweight thread
+    - Correct. A goroutine is a lightweight thread managed by the Go runtime. It offers a simpler, more efficient way to handle concurrent processes.
+
+3. How can goroutines communicate in Go?
+
+    A) Via shared variables
+    - Incorrect. Although it's possible to use shared variables, it's not recommended due to potential data races. Go mainly uses channels for communication between goroutines.
+
+    B) Via shared pointers
+    - Incorrect. Go does not encourage the use of shared pointers for data exchange between goroutines due to the risk of data races. Instead, it uses channels.
+
+    C) Via channels
+    - Correct. Channels in Go are a key feature of the language that are primarily used for exchanging data between concurrent goroutines.
+
+4. What is the primary function of a channel in Go?
+
+    A) To broadcast a value to all goroutines
+    - Incorrect. While you can use channels to broadcast values, their main function is to provide a conduit for safe, synchronized communication between goroutines.
+
+    B) For goroutines to communicate
+    - Correct. Channels in Go are primarily used to pass information between concurrent goroutines.
+
+    C) To store data persistently
+    - Incorrect. Channels in Go are used for communication between goroutines. They don't provide a means for persistent data storage.
+
+5. Which one of the following concepts is parallelism most closely associated with?
+
+    A) Asynchronous I/O
+    - Incorrect. Asynchronous I/O is typically associated with concurrency and non-blocking I/O operations, not necessarily with parallelism.
+
+    B) Multithreading
+    - Correct. The concept of multiple threads running simultaneously on different processing cores is most closely related to parallelism.
+
+    C) Message passing
+    - Incorrect. Message passing is a synchronization concept generally used in concurrent programming, including interprocess or interthread communication.
+
+6. Why might you use goroutines and channels in your Go code?
+
+    A) To catch exceptions
+    - Incorrect. Error handling in Go is done differently, primarily through explicit error checks, not through goroutines or channels.
+
+    B) To allow multiple functions to execute independently and communicate safely
+    - Correct. By using goroutines and channels, you can execute multiple functions concurrently and communicate safely between them.
+
+    C) To use less memory
+    - Incorrect. While efficient use of goroutines and channels may help reduce memory usage, their main purpose is to facilitate concurrency, not to optimize memory use.
+
+7. What feature of Go simplifies concurrency?
+
+    A) Inline function definitions
+    - Incorrect. While Go supports anonymous functions, they don't inherently simplify concurrency.
+
+    B) Multiple goroutines executing
+    - Correct. Go simplifies concurrency by providing goroutines, which are lightweight and efficient, making concurrent execution more accessible.
+
+    C) Callback functions
+    - Incorrect. Callback functions are a common feature in many programming languages, but they don't inherently simplify concurrency in Go.
+
+8. Which one of the following sequences best implies sequential programming?
+
+    A) A, B, C, D
+    - Correct. This sequence represents a series of operations happening in a specific order, signifying sequential programming.
+
+    B) A, B, A, C
+    - Incorrect. This sequence suggests that operations may be convoluted or overlapping, which is not characteristic of a merely sequential execution.
+
+    C) D, A, B, C
+    - Incorrect. This sequence suggests that operations occur out of a linear order, which is not a typical characteristic of sequential programming.
+
+9. In Go, how do you start a goroutine?
+
+    A) `go func() { /* function body */ }()`
+    - Correct. To start a goroutine in Go, you use the `go` keyword followed by a function call. To use an anonymous function, you define it directly followed by a set of parentheses to execute it.
+
+    B) `start goroutine func()`
+    - Incorrect. There is no `start` keyword in Go for starting a goroutine. Goroutines are started by prepending the `go` keyword to a function call.
+
+    C) `run goroutine func()`
+    - Incorrect. There is no `run` keyword in Go for starting a goroutine. Goroutines are initiated using the `go` keyword prepended to a function call.
+
+10. What might be a downside to using goroutines and channels in your Go code?
+
+    A) Code becomes slower
+    - Incorrect. Goroutines and channels are designed to improve performance by allowing concurrent execution of tasks.
+
+    B) It makes debugging more difficult
+    - Correct. One potential downside of using goroutines and channels is that it can make debugging more challenging due to race conditions, deadlocks or other concurrency-related issues.
+
+    C) It limits code to single-threaded execution
+    - Incorrect. Goroutines and channels enable concurrent and potentially multi-threaded execution, depending on the system's available cores.

@@ -1,0 +1,112 @@
+Unit_name: Week 1: Intro to Object Oriented Programming
+Page_name: Java basics
+
+1. In which of the following cases would you use the `public` keyword in Java?
+
+    A) When you want to limit the visibility of a class or method to its own package.
+    - Incorrect. The 'protected' keyword is used when you want to limit the visibility of a class or method to its own package and any subclasses.
+
+    B) When you want to limit the visibility of a class or method to the same class only.
+    - Incorrect. The 'private' keyword is used when you want to limit the visibility of a class or method to the same class only. 
+
+    C) When you want to allow a class or method to be accessible from any other class.
+    - Correct. The 'public' keyword is used when you want a class or method to be accessible from any other class.
+
+2. You are printing a `String` variable `greeting` to the console. Which of the following syntax is correct?
+
+    A) `println(greeting);`
+    - Incorrect. This syntax omits the System.out object necessary to perform the print operation.
+
+    B) `System.out.println(greeting)`
+    - Correct. This method is used to print the value of a variable to the console.
+
+    C) `print(greeting);`
+    - Incorrect. This syntax omits both the 'System.out' object and the 'ln' of the 'println' method.
+
+3. You need to iterate over an array `arr` in Java. What is the correct syntax?
+
+    A) `for (i = 0; i <= arr.length; i++){...}`
+    - Incorrect. The correct condition is 'i < arr.length', not 'i <= arr.length'. The indexing starts at 0, not 1.
+
+    B) `for (i = 0; i < arr.length; i++){...}`
+    - Correct. This is the correct syntax to iterate over an array in Java.
+
+    C) `foreach (i = 0; i < arr.length; i++){...}`
+    - Incorrect. 'foreach' is not a keyword in Java, 'for' is the correct keyword.
+
+4. You need to check whether two `int` variables, `a` and `b`, are equal in Java. Which of the following syntax is correct?
+
+    A) `if (a = b) {...}`
+    - Incorrect. The single equals sign is an assignment operator in Java, not a comparison operator.
+
+    B) `if (a == b) {...}`
+    - Correct. The '==' operator is used to compare two variables in Java.
+
+    C) `if (a === b) {...}`
+    - Incorrect. Triple equals sign is not a valid operator in Java.
+
+5. What reserved word in Java would you use to catch exceptions?
+
+    A) `error`
+    - Incorrect. 'error' is not a reserved word in Java.
+
+    B) `exception`
+    - Incorrect. While 'Exception' is a type in Java, the reserved word to catch exceptions is not 'exception'.
+
+    C) `catch`
+    - Correct. 'catch' block is used to handle exceptions in Java.
+
+6. Which statement is true about the `final` keyword in Java?
+
+    A) After a reference variable is declared as final, it can be changed to refer to a different object.
+    - Incorrect. Once a reference variable is declared as final, it can't be changed to refer to another object.
+
+    B) If a method is declared as final, it can still be overridden in the subclass.
+    - Incorrect. A method declared as final can't be overridden in the subclass.
+
+    C) If a variable is declared as final, then it’s a constant and cannot be modified.
+    - Correct. A final variable in Java is constant and cannot be modified after it's initialized. 
+
+7. How would you terminate a statement in Java?
+
+    A) Using a period (.)
+    - Incorrect. This is not the way to terminate a statement in Java.
+
+    B) Using a semicolon (;)
+    - Correct. In Java, you end a statement by using a semicolon (;).
+
+    C) Using a colon (:)
+    - Incorrect. The colon isn't used to terminate a statement in Java.
+
+8. You are creating a new instance of a `Car` class. Which of the following syntax is correct?
+
+    A) `Car = new Car();`
+    - Incorrect. In Java, you need to declare a variable to reference the new object created.
+    
+    B) `new Car();`
+    - Incorrect. While this would create a new Car, you have not assigned it to a variable so you can't use it later.
+    
+    C) `Car myCar = new Car();`
+    - Correct. This syntax correctly creates a new instance of the Car class and assigns it to the variable 'myCar'.
+
+9. What is the range of an integer (int) in Java?
+
+    A) -32768 to 32767
+    - Incorrect. This is the range of a short type in Java.
+
+    B) -2147483648 to 2147483647
+    - Correct. The integer (int) range in java is -2147483648 to 2147483647.
+
+    C) -128 to 127
+    - Incorrect. This is the range of byte in java.
+
+10. What keyword is used to define a class in Java?
+
+    A) Class
+    - Incorrect. In Java, keywords are case-sensitive. 'Class' and 'class' are not the same.
+  
+    B) class
+    - Correct. The 'class' keyword is used to define a new class in Java.
+    
+    C) define
+    - Incorrect. 'define' is not used to declare classes in Java. The correct keyword is 'class'.

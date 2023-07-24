@@ -1,0 +1,231 @@
+Unit_name: Week 1: Intro to Object Oriented Programming
+Page_name: Modelling and manipulation of a collection of objects
+
+1. What is a parameterized ArrayList in Java?
+   
+   A) An ArrayList that can only hold integers.
+   - Incorrect. You may have mistaken this with a specific example. However, a parameterized ArrayList can be tailored to hold any type of object, not just integers.
+
+   B) An ArrayList where one can specify the type of elements it can contain.
+   - Correct. It allows you to tailor the ArrayList to only hold elements of a certain data type.
+
+   C) An ArrayList that can contain different types of elements at the same time.
+   - Incorrect. You're thinking of a scenario of an unparameterized ArrayList. But remember, a parameterized ArrayList can only contain elements of the specified type.
+
+2. How do you declare a parameterized ArrayList in Java that holds String objects?
+
+   A) `ArrayList<String> myList = new ArrayList;`
+   - Incorrect. You were almost there, but don't forget the parenthesis at the end of `ArrayList`.
+
+   B) `ArrayList<String> myList = new ArrayList<>();`
+   - Correct. This is indeed how you declare an ArrayList that holds Strings in Java.
+
+   C) `ArrayList myList = new ArrayList<String>();`
+   - Incorrect. This option will compile but remember that for better clarity and error prevention in the future, it is recommended to specify the type on both sides.
+
+3. How do you add an element to an ArrayList in Java?
+      
+   A) `myList.add(element)`
+   - Correct. The method used to add elements to an ArrayList is indeed 'add'.
+
+   B) `myList.set(index, element)`
+   - Incorrect. The 'set' method is used for replacing an existing element at a specific position in the ArrayList, not for adding new elements.
+
+   C) `myList.nextElement(element)`
+   - Incorrect. While it sounds intuitive, remember that 'nextElement' is not a method of the ArrayList class in Java.
+
+4. How do you remove an element from an ArrayList in Java?
+
+   A) `myList.pop(index)`
+   - Incorrect. 'pop' may sound familiar from other programming contexts, but it isn't the right method for removing an element in an ArrayList.
+
+   B) `myList.delete(index)`
+   - Incorrect. Although it seems like a common term in computing, 'delete' is not a method for an ArrayList.
+
+   C) `myList.remove(index)`
+   - Correct. The 'remove' method is indeed used to remove an element at a specific index from the ArrayList.
+
+5. Given the following code, what will be the outcome?
+
+```java
+ArrayList<String> fruits = new ArrayList<String>();
+fruits.add("Apple");
+fruits.add("Banana");
+fruits.remove(0);
+System.out.println(fruits.get(0));
+```
+
+   A) It will print "Apple."
+   - Incorrect. Even though "Apple" was the first item added, remember that when an item is removed from an ArrayList, the remaining elements move up to fill the space.
+
+   B) It will print "Banana."
+   - Correct. After adding "Apple" and "Banana," and then removing the first element, "Banana" does indeed become the new first element.
+
+   C) It will not print anything.
+   - Incorrect. The ArrayList isn't empty or null. It has had elements added and removed, so there is something to print.
+
+1. Given an ArrayList in Java named `names`, which line of Code will correctly add a string "Hello" to it?
+
+   A) `names.add(Hello);`
+   - Incorrect. "Hello" would be treated as a variable without quotation marks, causing a compile error if the variable is not defined. Ensure the content to be added is treated as a string by using quotation marks.
+   
+   B) `names.add("Hello");`
+   - Correct. The add method is used to append items to an ArrayList. Good job!
+   
+   C) `names.remove("Hello");`
+   - Incorrect. The `remove()` method is used to remove items from an ArrayList, not to add them.
+
+2. What happens when you try to use the `remove()` method to remove an item from a Java ArrayList, but the item doesn't exist in the list?
+
+   A) An exception is thrown.
+   - Incorrect. The remove method does not throw an exception when given an element that isn't in the list, it returns false.
+   
+   B) The method returns false.
+   - Correct. When you try to remove an item that doesn't exist in the list, the `remove()` method will return false.
+   
+   C) The item is added to the ArrayList.
+   - Incorrect. The `remove()` method cannot add items to the ArrayList.
+
+3. How do you add an item to a specific index in an ArrayList in Java?
+
+   A) `list.add(index, item);`
+   - Correct. The method add(int index, E element) is used to insert a specific item at a specific position in an ArrayList.
+   
+   B) `list.add(item, index);`
+   - Incorrect. The sequence in add method is important. It should be `add(index, item)`.
+   
+   C) `list.indexAdd(item);`
+   - Incorrect. There's no `indexAdd()` method in ArrayList class.
+
+
+4. What does the ArrayList method: `list.add("item");` do?
+
+   A) Adds "item" at the end of the ArrayList.
+   - Correct. The `add(E element)` method is used to append an element to the end of an ArrayList.
+   
+   B) Adds "item" at the beginning of the ArrayList.
+   - Incorrect. The `add(E element)` method always adds the element to the end of the list, not the beginning.
+
+   C) Replaces every item in the ArrayList with "item".
+   - Incorrect. The `add()` method does not replace existing elements in the ArrayList, it only adds new ones at the end of the list.
+
+5. How do you remove the third item from an ArrayList in Java?
+
+   A) `list.remove(2);`
+   - Correct. The `remove(int index)` method removes the element at the specified position in this list. Remember that ArrayList is 0-indexed.
+   
+   B) `list.remove(3);`
+   - Incorrect. This would actually remove the 4th item (if it's present), since the index is zero-based in ArrayLists.
+
+   C) `list.delete(2);`
+   - Incorrect. There is no `delete()` method in the ArrayList class. The `remove(int index)` method is used to remove an item by its index.
+
+1. Consider the following Java code: `int[] numbersArray = new int[5];`. How many integer can we store in `numbersArray`?
+
+    A) 6
+    - Incorrect. The array size is determined by the number in the square brackets during initialization. Here, the number 5 means we can store 5 integers.
+
+    B) Undefined
+    - Incorrect. In Java, an array's size is defined when it is initialized. The array `numbersArray` is defined to store 5 integers.
+
+    C) 5
+    - Correct. In Java, the number in the square brackets when creating a new array represents the array's size. Here, `numbersArray` can store 5 integers.
+
+2. If we want to access the fourth element in an integer array called `studentScores`, how should we write the code?
+
+    A) studentScores[4]
+    -  Correct. Good job! In Java, arrays are 0-indexed, which means we begin counting from 0. Therefore, the fourth element is found at index 3.
+
+    B) studentScores[3]
+    - Incorrect. Remember that existing array indices start from 0, not 1. Therefore, the fourth number will be found at index 3.
+
+    C) studentScores[5]
+    - Incorrect. Watch out! Array indices in Java start from 0. This means that the fourth score will be at index 3, not 5.
+
+3. Consider the following lines of code in Java: `int[] studentGrades = new int[5];`. What value is stored in `studentGrades[2]`?
+
+    A) 0
+    - Correct. When we create a new array of integers in Java, all elements are initially set to 0.
+
+    B) Null
+    - Incorrect. "Null" is not a valid value for an integer in Java. When we create an integer array, all elements are set to 0 by default.
+
+    C) Undefined
+    - Incorrect. In Java, each element in an array has a default value. For an integer array, this is 0.
+
+4. The following code is written in Java: `int[] myArray = new int[10]; myArray = new int[20];`. What does this imply about array sizes in Java?
+
+    A) They are mutable
+    - Incorrect. Although the code is valid, it does not alter the size of the initial array. It assigns a completely new array to the variable "myArray".
+
+    B) They are immutable
+    - Correct. Once an array in Java is created, its size is fixed. The second line in the code doesn't change the size of the initial array but instead, it creates a new array and assigns it to the variable "myArray".
+
+    C) They can sometimes be altered
+    - Incorrect. This is not correct, the size of arrays in Java cannot be altered once they are created.
+
+5. In Java, what types of data can be mixed within the same array?
+
+    A) Only primitive types
+    - Incorrect. In Java, an array must contain elements of the same type, they cannot have a mix of different types.
+
+    B) All types
+    - Incorrect. Java Arrays are typed, meaning that they can contain only elements of the same type. For example, an array of int can only contain integers.
+
+    C) None
+    - Correct. In Java, all elements in an array must be of the same type. Different types of data cannot be mixed within the same array.
+
+6. Given the integer array `a`, how would we change the third element to 5?
+
+    A) a[2] = 5
+    - Correct. Well done! Remember in Java, arrays are 0-indexed so to access the third element we use index 2.
+
+    B) a[3] = 5
+    - Incorrect. Remember in Java, arrays are 0-indexed, meaning you start counting from 0. Therefore, the third element is found at index 2, not 3.
+  
+    C) a[2] == 5
+    - Incorrect. The `==` operator is used for comparison, not assignment. To assign a value to the third element, use `=` like `a[2] = 5`.
+
+7. Consider the following Java code: `int[] numbersArray = new int[10];`. If we want to find out how many elements can be stored in this array, what should we write?
+
+    A) int arraySize = numbersArray.length
+    - Correct. In Java, the `.length` property of an array gives you the total number of elements that the array can hold.
+
+    B) int arraySize = numbersArray.size()
+    - Incorrect. In Java, arrays do not have a size() method. You can find out the size of an array using the `.length` property.
+  
+    C) int arraySize = length.numbersArray
+    - Incorrect. The correct way to get the size of an array in Java is by writing `numbersArray.length`.
+
+8. Look at the Java code below: `String[] daysOfWeek = {"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"};`. What is the index of "Friday"?
+
+    A) 5
+    - Incorrect. Remember that arrays in Java are indexed starting from 0, not 1. So "Friday" is at the index 4, not 5.
+
+    B) 4
+    - Correct. Well done! In Java, array indexing starts from 0. Therefore, "Friday" is at the 4th index.
+
+    C) 6
+    - Incorrect. Arrays in Java start indexing at 0, so "Friday" is found at index 4, not 6.
+
+9. Consider the following code in Java: `boolean[] isEven = new boolean[5]; System.out.println(isEven[1]);`. What is printed to the console?
+
+    A) true
+    - Incorrect. When a boolean array is initialized in Java, all elements are set to 'false' by default, not 'true'.
+
+    B) false
+    - Correct. When you initialize a new boolean array in Java, all its elements are set to 'false' by default.
+
+    C) null
+    - Incorrect. In Java, elements in a boolean array can be either 'true' or 'false'. They are set to 'false' by default, not 'null'.
+
+10. Consider an integer array in Java: `int[] numbersArray = new int[5];`. What happens if we try to access an index outside of the array's size, like `numbersArray[5]`?
+
+    A) Nothing happens.
+    - Incorrect. If we try to access an index beyond the limit of the array, a runtime exception known as ArrayIndexOutOfBoundsException is thrown.
+
+    B) A runtime exception will be thrown.
+    - Correct. Java throws a runtime exception known as ArrayIndexOutOfBoundsException when trying to access an element outside of the array's range.
+
+    C) The compiler will report a syntax error.
+    - Incorrect. The compiler won't complain because syntactically the statement is correct. However, at runtime, this will throw an ArrayIndexOutOfBoundsException.

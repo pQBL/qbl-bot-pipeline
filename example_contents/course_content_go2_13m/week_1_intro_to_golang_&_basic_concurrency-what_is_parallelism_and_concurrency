@@ -1,0 +1,37 @@
+Unit_name: Week 1: Intro to Golang & Basic Concurrency
+Page_name: What is parallelism and concurrency?
+
+1. What is the key difference between parallelism and concurrency in Go?
+
+    A) Parallelism executes multiple tasks at the same time, while concurrency is about dealing with a lot of things at once.
+    - Correct. The distinction is about simultaneous execution vs. handling multiple things.
+  
+    B) Parallelism involves only one task, while concurrency involves multiple tasks.
+    - Incorrect. Both concepts deal with multiple tasks; the difference lies in their execution.
+  
+    C) There's no significant difference between the two.
+    - Incorrect. There is a key difference related to the execution of tasks.
+
+2. In the context of Go, what are goroutines?
+
+    A) They are operators for adding functionalities.
+    - Incorrect. Goroutines are not operators; their functionality is different.
+  
+    B) They are built-in libraries for Go.
+    - Incorrect. Though goroutines are part of Go, they aren't libraries.
+  
+    C) They are functions running concurrently with other goroutines.
+    - Correct. Functions running concurrently with other goroutines are indeed called goroutines.
+
+3. What is sequential programming in Go?
+
+    A) Programs where code statements run concurrently.
+    - Incorrect. That's not what sequential programming is about.
+  
+    B) Programs where code statements run in the order they are written, one after the other.
+    - Correct. You've got the concept of sequential programming right.
+  
+    C) Programs where code statements run parallel.
+    - Incorrect. That explanation better suits parallel programming.
+
+Remember to continue making similar changes to other questions as well.

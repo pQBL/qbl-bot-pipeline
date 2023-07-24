@@ -1,0 +1,375 @@
+Unit_name: Week 1: Intro to Golang & Basic Concurrency
+Page_name: Tour of Go 3 (Functions)
+
+1. What is unique about return values in functions when programming in Go?
+
+   A) Multiple return values can be named
+   - Correct. Named return values are specific to Go and can be an effective programming practice when returning various types or numerous values from a function. 
+
+   B) Every function must include a return value
+   - Incorrect. Not every function in Go needs to include a return value. You might be thinking of some other languages where a default return type like void is mandatory.
+
+   C) They can only be of a single type
+   - Incorrect. Go allows functions to return multiple values and these values can be of different data types.
+
+2. When can a function in Go be called a closure?
+
+   A) When it's a function within a class. 
+   - Incorrect. Go doesn't support classes in its structure. A closure is actually an inline function that captures and accesses variables from outside its scope. 
+
+   B) When it uses return values from another function
+   - Incorrect. Although intricate, a closure can certainly encompass this behaviour but this alone doesn't define what a closure is in Go.
+
+   C) When it's a function value that references variables from outside its function body
+   - Correct. This correctly defines a closure in Go - a function/block that captures variables from outside its own scope.
+
+3. What is the correct syntax to declare an anonymous function in Go?
+
+   A) func() {} 
+   - Correct. This is indeed the correct syntax to declare an anonymous function.
+
+   B) func(mystery) {} 
+   - Incorrect. This statement confusingly mixes up function declaration with variable declaration. Remember that anonymous functions in Go are functions without a name.
+
+   C) func unnamed() {} 
+   - Incorrect. The keyword 'unnamed' has no special meaning in Go and it would be treated simply as the name of the function rather than declaring it as anonymous.
+
+4. How are named return values used in Go?
+
+   A) Predefined within the function body
+   - Incorrect. Named return values are declared along with function parameters and not within the function body.
+
+   B) Defined after the function parameters and before function implementation
+   - Correct. Named return values in Go are declared after the function parameters and before the function's opening brace.
+
+   C) Declared within the return statement
+   - Incorrect. Named return values in Go are not declared within the return statement, and declaring them so does not provide the benefit of improved clarity and behavior control that named return values offer.
+
+5. How is a Go function invoked with two parameters, say 5 and 20?
+
+   A) call("addition", 5, 20)
+   - Incorrect. While this may be a valid function call in some programming languages, Go uses a simpler syntax without the need for a function call keyword or function name string.
+
+   B) addition(5, 20)
+   - Correct. The correct syntax of a function called 'addition' with two parameters would be `addition(5, 20)`.
+
+   C) addition.5.20
+   - Incorrect. Go follows traditional function invocation syntax with parentheses and a comma-separating the parameters. The correct method is `addition(5, 20)`.
+  
+6. What is the correct way to declare parameters of the same type in a Go function?
+
+   A) Present the datatype before every argument 
+   - Incorrect. In Go, if several consecutive parameters share a type, you can omit the type from all but the last one.
+
+   B) Mention the datatype after the list of arguments
+   - Incorrect. The datatype comes after the parameters in the list and not at the end of all parameters.
+
+   C) List all the arguments first and annotate the shared type once at the end
+   - Correct. In Go, if consecutive parameters share a type, you can omit the type from all but the last.
+
+7. Does Go support default argument values in function parameters?
+
+   A) Yes, all datatypes in Go support default values
+   - Incorrect. Go does not support default argument values for any datatype. All arguments must be provided when calling the function.
+
+   B) No, default values for function arguments are not available in Go
+   - Correct. Unlike some other languages, Go does not support default values for function parameters. 
+
+   C) Yes, but only for certain specific datatypes
+   - Incorrect. Currently, Go does not support default values for function parameters regardless of the datatype.
+
+8. Considering the Go function below, what is its appropriate classification?
+```go
+func (c *Circle) area() float64 {
+  return math.Pi * c.radius * c.radius
+}
+```
+   A) This is a general function
+   - Incorrect. This function is not a general function. This is an example of a method in Go as it is attached to the 'Circle' type.
+
+   B) This is an interface
+   - Incorrect. Although Go does support interfaces, this example does not define an interface. This is a method - it's attached to the type 'Circle' and can use its receiver 'c' to access 'Circle's' properties.
+
+   C) This is a method
+   - Correct. This is an example of a method in Go because it is attached to the struct 'Circle'. It can manipulate 'Circle's' properties through its receiver 'c'.
+
+9. Is it possible to declare a function inside another function in Go?
+
+   A) Yes, it's called a nested function
+   - Incorrect. In Go, functions defined within other functions are called anonymous functions or closures, not nested functions.
+
+   B) No, Go does not permit functions within functions
+   - Incorrect. Go does support defining functions within other functions. They're called anonymous functions or closures.
+
+   C) Yes, Go refers to functions within functions as anonymous functions or closures
+   - Correct. A function declared within another function in Go is typically referred to as an anonymous function, or closure.
+
+10. How do you denote a variadic function in Go?
+
+    A) Using an ellipsis (`...`) before the type of the parameter
+    - Incorrect. The ellipsis in Go is used after the type of the parameter, not before.
+
+    B) Using an ellipsis (`...`) after the type of the parameter
+    - Correct. Variadic functions in Go are notated using an ellipsis after the type of the parameter.
+
+    C) Using an ellipsis (`...`) after the parameter name
+    - Incorrect. Though it seems plausible, the ellipsis in Go is used directly after the datatype and not after the name of the parameter.
+
+1. What is symbolized by the '...' prefix before a parameter in a function declaration in Go?
+   
+    A) The function requires at least three similar type parameters.
+    - Incorrect. The '...' does not specify a minimum number of parameters. Instead, it allows for any number of parameters, including zero.
+  
+    B) The function can accept a variable number of arguments of a specific type.
+    - Correct. The '...' before a parameter denotes that the function is a variadic function, which can accept any number of arguments of a specific type.
+
+    C) The function will return multiple values.
+    - Incorrect. The '...' before a parameter conveys information about the input parameters, not about what the function returns.
+
+2. Inside a function's body in Go, how does a variadic parameter appear?
+
+    A) As an array of a specific type.
+    - Incorrect. Although arrays and slices in Go are similar, a variadic parameter appears as a slice, not an array.
+
+    B) As a single value.
+    - Incorrect. Inside a function, a variadic parameter does not appear as a single value but rather as a slice of a specific type.
+
+    C) As a slice of a specific type.
+    - Correct. Inside the function, a variadic parameter appears as a slice of a specific type.
+
+3. Considering the following function declaration in Go: `func foo(x ...int){}`. How many integer arguments are you allowed to pass to the `foo` function?
+
+    A) Exactly one
+    - Incorrect. A variadic function accepts any number of arguments, including zero arguments. 
+
+    B) Exactly three
+    - Incorrect. The amount of arguments isn't exactly three. A variadic function can accept any number of arguments or none at all.
+
+    C) Zero or more
+    - Correct. Variadic functions can accept any number of arguments of their specified type, or no arguments.
+
+4. `func printNums(nums ...int){ for _, num := range nums {fmt.Println(num)}} printNums()`. What output does this code produce?
+
+    A) A runtime error
+    - Incorrect. Variadic functions are designed to handle zero or more arguments, so calling them without arguments is perfectly valid.
+
+    B) An empty output
+    - Correct. As no arguments have been passed to the `printNums` function, it has nothing to print, resulting in an empty output.
+
+    C) The zero value of int
+    - Incorrect. The function doesn't print defaults or zero values when not supplied with arguments.
+
+5. Given the variadic function `func printStrings(values ...string){}`, what happens if you pass arguments of different types to it?
+
+    A) No compile-time error but a run-time error.
+    - Incorrect. If you pass arguments of different types, the compiler itself will detect the type mismatch and throw a compile-time error.
+
+    B) A compile-time error.
+    - Correct. When arguments of incompatible types are passed to a variadic function, it results in a compile-time error due to the type mismatch.
+
+    C) No errors at all.
+    - Incorrect. Argument types should match the function's parameter type during the function call. Mismatch leads to a compile-time error.
+
+
+(Continue with improving rest of the questions adhering to the provided guidelines.)
+
+1. What is a Closure in Go programming language?
+
+    A) A function defined within another function, with access to its parent's variables.
+    - Incorrect. While it's true that a closure is defined within a function and has access to its parent's variables, it's important to note that a closure is specifically an anonymous function.
+  
+    B) A function that exists in isolation within its environment.
+    - Incorrect. Closures do function within a specific environment, but they are not isolated. They have access to variables from their parent function.
+   
+    C) An anonymous function that references variables from its enclosing function.
+    - Correct. A closure in Go is an anonymous function that can use the variables from its enclosing function.
+
+***
+
+2. Given the following Go code snippet, identify the closure – 
+
+    ```
+    func add() func(int) int {
+        total := 0
+        return func(i int) int {
+            total += i
+            return total
+        }
+    }
+    ```
+
+    A) `add` is the closure.
+    - Incorrect. While `add` is a function, it is not a closure in this context. The closure is the anonymous function returned by `add`.
+  
+    B) `add` returns a closure.
+    - Correct. The function `add` indeed returns a closure. The returned anonymous function maintains a reference to the `total` variable from the `add` function.
+   
+    C) The function `func(i int) int` is the closure.
+    - Incorrect, despite some truth. `func(i int) int` is indeed the syntax used to define the closure. However, it's important to remember that a closure is an anonymous function that can access variables from its enclosing function.
+
+***
+
+3. Why are closures commonly used in Go?
+
+    A) To reduce the need for defining global variables.
+    - Incorrect. While closures do help in limiting the use of global variables, they are primarily used to capture and encapsulate state within a function.
+  
+    B) To preserve the state of a function between multiple function calls.
+    - Correct. One of the main uses of closures is to encapsulate state within a function which can be reused across multiple function calls.
+   
+    C) To create isolated environments for data manipulation.
+    - Incorrect. Closures are not used to create isolated environments. Any changes they make to the variables of their parent function will also be reflected there.
+
+***
+
+4. What common problem can arise when using closures within a loop in Go?
+
+    A) The closure uses the final value of the loop variable, not the value at each iteration.
+    - Correct. If a closure uses a loop variable, it will refer to the finished loop's variable, not its value at each iteration. This can be a common source of bugs.
+
+    B) The closure will only execute for the first iteration of the loop.
+    - Incorrect. A closure will execute for every loop iteration it's called in, not just the first one.
+   
+    C) The closure cannot access the loop variable.
+    - Incorrect. Closures in Go can access loop variables, but a common pitfall is how they do so, referring to the finished loop's variable rather than its values at each iteration.
+
+***
+
+5. Consider the following Go code snippet:
+
+    ```
+    func sequence() func() int {
+        i := 0
+        return func() int {
+            i++
+            return i
+        }
+    }
+    ```
+
+    What will happen when you repeatedly call the function `sequence`?
+
+    A) The same value will be returned every time.
+    - Incorrect. The `sequence` function will not return the same value every time it's called, as the closure within the function increments the `i` variable with each call.
+  
+    B) The function will return a progressively increasing sequence of numbers starting from 1.
+    - Correct. The anonymous function returned by `sequence` increments the value of `i` each time it's called, due to the retained state within the closure.
+   
+    C) The function will result in a compile-time error.
+    - Incorrect. This Go code uses closures correctly and will compile as it is. The function `sequence` returns an anonymous function which increments the variable `i` upon each call.  
+
+***
+
+6. Can you defer a function call that is a closure in Go?
+
+    A) No, `defer` can only be used with named functions, not closures.
+    - Incorrect. `defer` is not just for named functions. It can also be used with closures in Go.
+  
+    B) Yes, we can use the `defer` keyword with closures, ensuring the deferred closure executes at the end of the containing function.
+    - Correct. The `defer` keyword can indeed be used with closures. This will ensure the closure is executed just before the containing function finishes execution.
+   
+    C) The `defer` keyword has no effect when used with closures.
+    - Incorrect. This statement is not accurate. The `defer` keyword will ensure the execution of the closure after the outer function's completion, similar to named functions.
+
+1. How would you classify an anonymous function in Go?
+    A) A mechanism that anonymises user details.
+    - Incorrect. Anonymous functions are not about anonymizing data, but about naming conventions in Go functions.
+    B) A function that doesn't require a declaration.
+    - Incorrect. Every function, even if anonymous, should be declared prior to its usage.
+    C) A function that doesn't have an associated name.
+    - Correct. Anonymous functions in Go are functions without explicit names.
+
+2. What keyword is essentially used to declare an anonymous function in Go?
+    A) `anonym`
+    - Incorrect. Though it may sound plausible because of the word "anonym", Golang uses `func` to declare a function.
+    B) `func`
+    - Correct. The `func` keyword in Golang is used for declaring functions.
+    C) `defer`
+    - Incorrect. `defer` is a keyword in Golang, but it is not used for declaring functions.
+
+3. Given the following Go code snippet, what is the expected outcome?
+```go
+func(){ fmt.Println("Hello, World!") }()
+```
+    A) The program will throw a compile error.
+    - Incorrect. This is a valid anonymous function declaration & call in Go.
+    B) It doesn't output anything.
+    - Incorrect. This anonymous function, once executed, will print something to the console.
+    C) It will print "Hello, World!" on the console.
+    - Correct. This anonymous function executes and prints "Hello, World!" on the console.
+
+4. What is the right syntax to declare an anonymous function in Go?
+
+    A) `anonymous() {...}`
+    - Incorrect. `anonymous` is not a recognized keyword for declaring an anonymous function in Go.
+    B) `deffered() {...}`
+    - Incorrect. While `defer` is a keyword in Go, it's not used for declaring an anonymous function.
+    C) `func() {...}`
+    - Correct. This is the correct syntax for declaring an anonymous function in Go.
+
+5. How can you implement an anonymous function immediately after its declaration in Go?
+    A) By adding `call` at the end of function declaration.
+    - Incorrect. In Golang, you don't need the `call` keyword to execute a function.
+    B) By appending `()` after the function declaration.
+    - Correct. In Golang, immediately calling a function after its declaration is done by appending () after the function declaration.
+    C) By calling the function using its memory address.
+    - Incorrect. In Golang, functions can be called directly, without using their memory addresses.
+
+6. Provided below is an extract from a Go code snippet. Find what's missing.
+```go
+add := func(a, b int) int {...}
+```
+    A) It has everything it needs.
+    - Correct. This is a complete anonymous function declaration & assignment to `add` variable in Go.
+    B) It needs to have a return statement.
+    - Incorrect. The 'return' statement is not missing, It's represented by '...'.
+    C) The function name is missing.
+    - Incorrect. This is intended as it is an anonymous function.
+
+7. How do you execute an anonymous function that has been assigned to the variable `callback`?
+    A) `execute callback`
+    - Incorrect. In Golang, `execute` is not used. We directly use the variable name with parentheses.
+    B) `callback function`
+    - Incorrect. `callback function` is not the right syntax to call a function.
+    C) `callback()`
+    - Correct. A function stored in a variable can be called by appending parentheses after its name.
+
+8. Which of the following is NOT an application of anonymous functions in Go?
+    A) For inline functions.
+    - Incorrect. Anonymous functions are often used inline in Go.
+    B) In place of named functions to decrease code verbosity.
+    - Incorrect. Anonymous functions are sometimes used in place of named functions to make things more concise.
+    C) To increase Go runtime speed.
+    - Correct. Using anonymous functions does not inherently increase the speed of the Go runtime.
+
+9. Given the snippet below:
+```go
+add := func(a, b int) int { return a + b }
+fmt.Println(add(4, 5))
+```
+What would the terminal print?
+    A) Compilation Error
+    - Incorrect. This is a valid function declaration and call in Go, there’s no error to stop compilation.
+    B) Nothing
+    - Incorrect. The function call made in the second line will result in an output.
+    C) 9
+    - Correct. The function call will add the two arguments 4 and 5, and print 9.
+
+10. Consider the below Go functions. Which one of the following statements is accurate?
+```go
+func outer() func() int {
+    i := 0
+    return func() int {
+        i++
+        return i
+    }
+}
+increment := outer()
+fmt.Println(increment())
+```
+    A) Outer function returns dynamic functions.
+    - Incorrect. While the outer function returns a function, it's not inherently 'dynamic'.
+    B) The function `increment` will print 1 to the console.
+    - Correct. This operation increments the value of i in the function scope and then returns it.
+    C) The function `outer()` doesn't return a value.
+    - Incorrect. In this case, `outer()` does return a function.

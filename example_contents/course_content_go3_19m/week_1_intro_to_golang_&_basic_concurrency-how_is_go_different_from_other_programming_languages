@@ -1,0 +1,112 @@
+Unit_name: Week 1: Intro to Golang & Basic Concurrency
+Page_name: How is Go different from other programming languages?
+
+1. What is the command to install Go on your computer?
+
+    A) go install
+    - Incorrect. The 'go install' command is used to compile and install Go packages and dependencies, rather than to install Go itself. Most installations procedures require direct download.
+
+    B) go get
+    - Incorrect. The 'go get' command is used for downloading and installing packages from remote source control systems and not for installing Go itself.
+
+    C) download and install it from the official Go website
+    - Correct. The standard procedure for installing Go is to download and install it from the official Go website.
+
+2. What environment variable is needed for Go to work correctly?
+
+    A) PATH
+    - Correct. Go needs the PATH environment variable to be set so it can find its executables and tools.
+    
+    B) GOBIN
+    - Incorrect. While GOBIN is used to override the default directory where Go's executables are installed, it is not required for Go to work correctly.
+
+    C) GOROOT
+    - Incorrect. GOROOT is an environment variable that specifies the location of your Go installation. However, for typical Go installations, you should not need to set GOROOT manually.
+
+3. What command do you use to create a new Go module?
+
+    A) go mod new
+    - Incorrect. Though your answer is close, the 'go mod' command must be followed by a keyword indicating the action for the module.
+
+    B) go new mod
+    - Incorrect. Remember that in Go, the 'new' keyword is not used to create resources.
+
+    C) go mod init
+    - Correct. The 'go mod init' command creates a new Go module initializing a 'go.mod' file.
+
+4. What file is generated after initializing a new module in Go?
+
+    A) mod.go
+    - Incorrect. Remember the naming convention for Go module files starts with 'go'.
+
+    B) go.mod
+    - Correct. Initializing a new Go module generates a 'go.mod' file which defines the module path.
+
+    C) init.mod
+    - Incorrect. The naming convention for Go module files is not 'init.mod'. Focus on the program's functionality to infer the correct answer.
+
+5. In the 'go.mod' file, what does the 'require' directive signify?
+
+    A) The required Go version
+    - Incorrect. The 'require' directive is not used for indicating the required Go language version. The 'go' directive is used for that.
+
+    B) The packages required to run the program
+    - Correct. The 'require' directive is used for specifying the packages on which the module depends. This allows precise version specification for each dependency.
+
+    C) The required environment variables
+    - Incorrect. There's no directive in the 'go.mod' file to indicate required environment variables.
+
+6. How do you upgrade a specific dependency version to latest in Go modules?
+
+    A) use 'go get <module path>'
+    - Correct. The 'go get' command followed by a module path updates the specific dependency to its latest version.
+
+    B) edit go.mod file 
+    - Incorrect. Though you can manually edit the 'go.mod' file's version numbers, it is generally not recommended as it can lead to dependency issues.
+
+    C) use 'go upgrade <module path>'
+    - Incorrect. The 'go upgrade' command is not part of Go's syntax.
+
+7. How do you exclude a package from your current module in Go?
+
+    A) by using exclude in the go.mod file
+    - Correct. 'exclude' directive in 'go.mod' file can be used to exclude a specific version of a dependency from use by your module.
+    
+    B) by using 'go get <module path>@none'
+    - Incorrect. 'go get <module path>@none' is used to downgrade a package to an earlier version or to remove a package, not to exclude it.
+
+    C) by using 'go mod exclude <module path>'
+    - Incorrect. 'go mod exclude' is not a valid Go command.
+
+8. What is the purpose of 'go mod verify' command?
+
+    A) To verify syntax errors in the go.mod file
+    - Incorrect. 'go mod verify' does not check for syntax errors in the 'go.mod' file.
+
+    B) To ensure that dependencies of the current module have not been modified since they were downloaded
+    - Correct. 'go mod verify' checks that the on-disk cached copies of module downloads have not been tampered with since they were downloaded.
+
+    C) To verify the current module's dependencies and prune any that are no longer needed
+    - Incorrect. There's a different command to prune unnecessary dependencies from the 'go.mod' file.
+
+9. Suppose you encounter an error while compiling your Go code due to a bug in version v1.2.3 of module M. The bug has been fixed in v1.2.4. Which command will you use to upgrade to the bug fix?
+
+    A) go get M@v1.2.4
+    - Correct. The 'go get' command, followed by the module path and '@' and the version, updates the specific dependency to the specified version.
+
+    B) go mod upgrade M@v1.2.4
+    - Incorrect. There's no 'go mod upgrade' command in Go.
+
+    C) edit the 'go.mod' file and replace M v1.2.3 with M v1.2.4
+    - Incorrect. While it is possible to manually edit the 'go.mod' file, it is generally better to use the 'go get' command to upgrade a package.
+
+10. What is a Go workspace?
+
+    A) A folder where you store your Go source code
+    - Correct. A Go workspace is a directory hierarchy with three directories at its root: src, pkg, and bin.
+
+    B) A specific area in your computer's memory where Go stores temporary files
+    - Incorrect. In the context of Go, a workspace is not related to memory storage for temporary files.
+
+    C) A text editor or IDE setup for writing Go code
+    - Incorrect. While a text editor or IDE may be a 'workspace' in general terms, in the context of Go, a workspace has a more specific meaning.

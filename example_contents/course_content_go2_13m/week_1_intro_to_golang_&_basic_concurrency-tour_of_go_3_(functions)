@@ -1,0 +1,294 @@
+Unit_name: Week 1: Intro to Golang & Basic Concurrency
+Page_name: Tour of Go 3 (Functions)
+
+1. When defining a function in Go, what would happen if the function is meant to return an integer, but a string is passed instead?
+
+    A) The function will execute successfully with no issues.
+    - Incorrect. The Go compiler will throw a mismatched type return error because the declared return type of the function and returned value are not the same.
+
+    B) An error will occur stating that the types do not match.
+    - Correct. Go is a statically typed language. It enforces strict type matching.
+
+    C) The string will automatically get converted to an integer.
+    - Incorrect. Go doesn't perform automatic type conversion.
+
+2. If a function in Go does not explicitly return a value, what is returned to the caller?
+
+    A) Error
+    - Incorrect. Lack of a return value does not necessarily mean an error. It simply means the function doesn't provide any output directly.
+
+    B) Nothing is returned
+    - Correct. When a function in Go is designed with no return value, nothing is returned to the caller.
+
+    C) Zero value of the return type
+    - Incorrect. Zero values are the default values assigned to variables. If a function doesn't specify a return value, it won't return anything.
+
+3. Consider the Go function, `func add(a int, b int) int { return a + b }`. What is a more accurate description of its purpose?
+
+    A) The function adds any two numbers.
+    - Incorrect. This function specifically demands integers. It doesn't cater to all numeric types.
+
+    B) The function adds two integers.
+    - Correct. This function takes two integers as arguments and adds them together.
+
+    C) The function adds any number of integers.
+    - Incorrect. The function is specified to only add two integers.
+
+4. In Go, is it possible for a function to return another function?
+
+    A) This is generally discouraged although it is possible.
+    - Incorrect. Returning functions from functions is a common feature of higher-order functions in Go.
+
+    B) Yes, a function can return another function.
+    - Correct. It's indeed possible and common in Go to have a function return another function.
+
+    C) No, a function cannot return another function.
+    - Incorrect. Functions in Go can return any types, including functions.
+
+5. How would you define a function in Go, that accepts two parameters of different types and returns two values of different types?
+
+    A) func name(a int, b float32) (int, float32)
+    - Correct. This is the proper syntax for declaring a function in Go with mixed parameter and return types.
+
+    B) function name(int a, float b) (int, float)
+    - Incorrect. The keyword `function` is not correct, it should be `func`. Also, type precedes variable declaration.
+
+    C) func name(int a, float b) (c, d)
+    - Incorrect. This isn't valid Go syntax. Go doesn't assume the types of the return variables.
+
+6. How can you declare a function in Go that takes no arguments and returns no value?
+
+    A) func functionName()
+    - Correct. A function with no parameters and no return values simply puts parentheses with nothing in between.
+
+    B) function functionName()
+    - Incorrect. The keyword `function` is not correct, it should be `func`.
+
+    C) void functionName()
+    - Incorrect. `void` is used in other languages to specify a function with no return values, but is not used in Go.
+
+7. How would you call a Go function named `displayMessage` that takes no arguments?
+
+    A) call displayMessage
+    - Incorrect. There's no `call` keyword in Go. The function name followed by parentheses is used to call the function.
+    
+    B) displayMessage()
+    - Correct. Function calling in Go requires the function name followed by parentheses.
+    
+    C) displayMessage.<execute>
+    - Incorrect. There's no `<execute>` method in Go. The function name followed by parentheses is used to call the function.
+
+8. What is the significance of the `return` statement in a Go function?
+
+    A) It indicates the end of a function.
+    - Incorrect. While often `return` is used at the end of functions, its primary purpose is to provide a value back to the caller, not to signal the end of a function.
+
+    B) It signifies the value that a function sends back to its caller.
+    - Correct. The `return` statement passes the control along with any return values, back to the caller of the function.
+
+    C) It is optional and is only used to improve readability.
+    - Incorrect. The `return` statement isn't merely for readability. It has a functional role in providing a return value from functions.
+
+9. Is the `return` keyword mandatory at the end of every Go function?
+
+    A) Yes, every function must end with `return`
+    - Incorrect. The `return` statement is needed only if your function returns a value or multiple values. It's not required for functions that don't have defined return values.
+
+    B) No, it’s only needed for functions that provide a return value
+    - Correct. If a function does not provide any return values, you don't need a `return` statement.
+
+    C) Only if the function is complex
+    - Incorrect. Complexity of the function does not determine the need for a `return` statement. It depends on whether the function provides a return value.
+
+10. What would be the effect of removing return values from this Go function? `func add (a int, b int) int { return a + b }`
+
+    A) The function will not compile
+    - Correct. If you remove the return values without updating the function signature, the program will fail to compile due to the mismatch.
+
+    B) The function will compile but return an unexpected result
+    - Incorrect. The Go compiler will not allow you to compile a function that is missing a necessary return statement.
+
+    C) The function will compile successfully
+    - Incorrect. The function's signature declares that it returns an integer. Removing the `return` statement would prevent successful compilation.
+
+1. Consider the function `func add(nums ...int) int`. Imagine you have an integer slice `x := []int{2, 3, 4}`, how would you pass `x` as an argument to the function `add`?
+
+    A) Like this: `add(x...)`
+    - Correct. You've nailed it! Using the ellipsis after the slice will correctly spread the slice to the function.
+  
+    B) Like this: `add(x)`
+    - Incorrect, but you're on the right track. You need to use the ellipsis after the slice name when passing it to a variadic function.
+    
+    C) Like this: `add(...x)`
+    - Incorrect. Remember, the ellipsis should be placed after the slice name.
+
+2. Look at the following function: `func longest(strings ...string) string`. Can you deduce why this function might be useful in a real-world scenario?
+
+    A) It could be used to concatenate all strings
+    - Incorrect, but good guess! While it's true that you can manipulate all strings passed to a variadic function, the longest function is probably configured to find the longest string among the arguments.
+  
+    B) It could be used to find the longest string among the arguments
+    - Correct. Great inference! This function likely uses the variadic parameter to evaluate the length of all the strings passed and return the longest one.
+    
+    C) It could be used to convert all strings to upper case
+    - Incorrect. While variadic functions could theoretically manipulate the strings passed to them, the name of this function suggests it's purposed to find the longest string.
+
+3. What is the behavior of a variadic function if no arguments are passed during its call?
+
+    A) It will produce a compile-time error
+    - Incorrect. Good try, though! Go allows calling variadic functions without any arguments. Inside the function, the variadic parameter will be seen as an empty slice.
+  
+    B) It will throw a runtime error
+    - Incorrect, but don't be discouraged. In Go, calling a variadic function without any parameters gives an empty slice to the respective parameter in the function.
+    
+    C) It will be received as an empty slice of the parameter type in the function
+    - Correct. Well done! Remember that a variadic function without any parameters is not an error; instead, the function receives an empty slice of the parameter type.
+
+4. In Go, can a function have both regular and variadic parameters together?
+
+    A) Yes, but the regular parameters should come after variadic parameters
+    - Incorrect, but keep trying. The rule of thumb in Go is that the variadic parameter, when mixed with regular parameters, should be last.
+  
+    B) Yes, but the variadic parameters should follow the regular parameters
+    - Correct. You've got it! In Go, the variadic parameter has to be the last in the function declaration.
+    
+    C) No, Go only allows regular or variadic parameters, not a mix of both.
+    - Incorrect. However, it's indeed possible to have both regular and variadic parameters in a function, but remember that the variadic parameter should be last.
+
+5. When you have a variadic parameter in a function definition in Go, where do you place the ellipsis?
+
+    A) Before the parameter (e.g., `...nums int`)
+    - Incorrect, but don't worry. The ellipsis should come after the parameter name, followed by the parameter type. Keep going!
+  
+    B) After the parameter (e.g., `nums... int`)
+    - Correct. Excellent! The ellipsis comes after the parameter name when declaring a variadic function.
+    
+    C) After the parameter and its type (e.g., `nums int...`)
+    - Incorrect. However, remember that the ellipsis comes immediately after the parameter name.
+
+1. What is a closure in Go programming?
+
+    A) A function that does not depend on any variables outside of its declaration. 
+    - Incorrect. The strength of closures is the ability to retain access to variables from their outer scope.
+
+    B) A function that references variables from outside its own function body.
+    - Correct. A closure in Go is a function that can utilize variables from outside its immediate lexical scope.
+
+    C) A looping construct specific to Go.
+    - Incorrect. Closures relate to function programming and variable scope, not to control flow or loops.
+
+2. In terms of lifecycle, how does a variable within a closure compare to a regular local variable?
+
+    A) Variables in a closure cease to exist when the function enclosing the closure finishes execution.
+    - Incorrect. But you're close! Unlike normal local variables, variables in a closure are maintained until the closure itself is garbage collected.
+
+    B) Variables in a closure are maintained until the closure is garbage collected.
+    - Correct. The closure maintains its variables, ensuring they exist for the lifetime of the closure.
+
+    C) Variables in a closure are not maintained.
+    - Incorrect. A key property of closures is their ability to maintain variables even outside of their direct scope.
+
+3. Under what circumstance can a Go closure be passed to another function as an argument? 
+
+    A) Closures in Go are not capable of being passed to another function as an argument
+    - Incorrect. Go does indeed allow closures to be passed between functions. Consider the function definition and ensure that the closure meets the requirements.
+
+    B) A closure can be passed to another function if the function is prepared to receive a function type of matching return and parameter types.
+    - Correct. As with any function, closures can be passed only where the receiving function is expecting a compatible function type.
+
+    C) A closure can be passed to any function without any regard to the type of parameters the receiver function accepts.
+    - Incorrect. While closures are flexible, they adhere to Go's strict typing rules, and can only be passed where a compatible function type is expected.
+
+4. Consider the following Go code snippet:
+
+    ```
+    func Count() func() int {
+        i := 0
+        return func() int {
+            i++
+            return i
+        }
+    }
+    counter := Count()
+    fmt.Println(counter())
+    fmt.Println(counter())
+    ```
+
+    What does this code demonstrate about closures in Go?
+
+    A) It shows that closures do not maintain their environment between invocations.
+    - Incorrect. The incrementation of `i` with each call to `counter()` actually demonstrates that closures do maintain their environment.
+
+    B) It shows that closures in Go maintain their environment between function invocations.
+    - Correct. The maintained incrementation of the `i` variable between calls to `counter()` shows that a closure in Go maintains its environment, which is a characteristic trait.
+
+    C) It shows that the closure 'steals' the i variable from the Count function.
+    - Incorrect. The variable `i` isn’t 'stolen', rather it continues to live for as long as the closure has a reference to it.
+  
+(Note: Continue improving the remaining questions in a similar manner)
+
+1) When declaring an anonymous function in Go, what is the most accurate syntax?
+
+- A) var f = function() {}
+   - Incorrect. This would be the correct syntax in JavaScript. Could remember that Go utilizes a unique syntax style for declaring anonymous functions.
+
+- B) func() {}
+   - Incorrect. This is the beginning of an anonymous function declaration, but it should be invoked immediately or assigned to a variable for later use.
+
+- C) f := func() {}
+   - Correct. This is how you declare an anonymous function and assign it to a variable in Go. 
+
+2) Considering the following Go code snippet: ### (func(val int) { fmt.Println("Value: ", val) })(20) ###, what will be printed as output?
+
+- A) An error will occur.
+   - Incorrect. The syntax in this statement is correct. Go allows declaring and invoking anonymous functions immediately.
+
+- B) Value: 20.
+   - Correct. The anonymous function takes an integer, prints it after "Value: ", and the function is immediately invoked with 20 as the argument.
+
+- C) Nothing will be printed.
+   - Incorrect. The function is invoked immediately after declaration with an argument of 20. This argument is then printed to the console.
+
+3) What primary purpose does an anonymous function serve in Go?
+
+- A) To create a recursive function.
+   - Incorrect. While it's possible to create recursive functions in Go, including with anonymous functions, this is not their primary purpose.
+
+- B) To create a function that can modify its behavior based on external variables.
+   - Correct. Anonymous functions are often used in Go to access variables from an enclosing function, enabling the creation of closures and function generators.
+
+- C) To produce more efficient code.
+   - Incorrect. While they can sometimes result in more succinct code, anonymous functions do not inherently produce more efficient code.
+
+4) Consider the following Go line: ### f := func(val int) { fmt.Println("Squared Value: ", val*val) } ###. How could you use f to print the square of 5?
+
+- A) f[5]
+   - Incorrect. This syntax is used to access elements in an array or slice in Go, f is a function not an iterable.
+
+- B) f(5)
+   - Correct. To use f to square an integer, you would need to call it as a function with an integer as an argument.
+
+- C) f = 5
+   - Incorrect. This would try to assign the integer 5 to f, but f is a function.
+
+5) If you were to assign an anonymous function to a variable, would the variable's data type be 'function'?
+
+- A) Yes.
+   - Correct. If an anonymous function is assigned to a variable, the variable effectively becomes a function variable, and its type is that function's type.
+
+- B) Sometimes.
+   - Incorrect. Once an anonymous function is assigned to a variable, the variable's type will become the function's type, no matter what.
+
+- C) No.
+   - Incorrect. Once you assign a function to a variable, the type of the variable will be the same as the assigned function's type.
+   
+6) How could you use an anonymous function to create a closure in Go?
+
+- A) By returning the anonymous function from another function.
+   - Correct. Creating a closure involves defining an anonymous function within another function and returning that anonymous function. This results in a closure that binds variables declared in the outer function.
+
+- B) By creating a loop inside the anonymous function.
+   - Incorrect. Creating a loop inside an anonymous function does not necessarily create a closure. Closures are created when an anonymous function accesses variables from its surrounding scope.
+
+- C) By calling the anonymous function recursively.
+   - Incorrect. Recursive calls can be made inside an anonymous function, but this will not create a closure.

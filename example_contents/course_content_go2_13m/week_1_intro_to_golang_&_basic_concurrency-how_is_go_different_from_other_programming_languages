@@ -1,0 +1,44 @@
+Unit_name: Week 1: Intro to Golang & Basic Concurrency
+Page_name: How is Go different from other programming languages?
+
+1. What are the methods to set the GOPATH in a Terminal?
+   A) `setenv GOPATH`
+   - Incorrect. In most terminals, `setenv` is not recognized as a command. However, you can set the environment variables differently in different operating systems and terminals such as using `export` in Unix/Linux or `set` in Windows.
+   B) `go set GOPATH`
+   - Incorrect. In Go environment setup, you don't set the GOPATH using Go's command-line interface. You'll need to use your system's environment variables setting methods.
+   C) `export GOPATH=/your/path`
+   - Correct. In a Unix/Linux operating system, you can set the GOPATH environment variable using `export`, followed by the path of your workspace.
+
+2. Jun has created a Go workspace and divided it into three directories. Which directory should he place his Go source files?
+   A) `pkg`
+   - Incorrect. The `pkg` directory contains package objects. Jun should place his Go source files in the `src` directory.
+   B) `src`
+   - Correct. Yes, Jun should place his Go source files in the `src` directory.
+   C) `bin`
+   - Incorrect. The `bin` directory contains executable commands, not the source files.
+
+3. If your project depends on various other packages, how could Go modules be of use?
+   A) They can compile my Go source files faster.
+   - Incorrect. Compiling Go source files faster isn't the primary purpose of Go modules. Go modules are essential for managing package dependencies in a project.
+   B) They can create an organized workspace directory structure.
+   - Incorrect. While an organized workspace is generally a good practice in large projects, Go modules aren't used explicitly for this purpose. Consider learning more about Go's workspace directory structure.
+   C) They manage my package dependencies.
+   - Correct. Yes, Go modules help manage package dependencies in your project.
+
+4. To create a new Go module, what command would you run?
+   A) `go mod create`
+   - Incorrect. The command 'go mod create' doesn't exist in Go module commands. When starting a new module, a different command is used.
+   B) `go mod new`
+   - Incorrect. The command 'go mod new' doesn't exist in Go module commands. Creating a new module requires initializing it first with a different command.
+   C) `go mod init`
+   - Correct. Yes, you would use the 'go mod init' command to initialize and create a new module.
+
+5. Where should you ideally create the Go module files in a repository for best practices?
+   A) Inside a `modules` directory in my repository.
+   - Incorrect. Placing Go Modules inside a specific `modules` directory is not the recommended best practice. When it comes to the placement of modules, consider the overall organization of your repository.
+   B) In the `src` directory.
+   - Incorrect. The 'src' directory usually holds source files. Go module files are typically kept at a different location in your repository. 
+   C) At the root of my repository.
+   - Correct. Yes, it is recommended to write Go module files at the root of your repository.
+
+Note: Continue to improve the rest of the questions based on the criteria laid out by the critique.

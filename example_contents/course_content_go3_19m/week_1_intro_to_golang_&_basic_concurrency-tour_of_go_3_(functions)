@@ -1,0 +1,416 @@
+Unit_name: Week 1: Intro to Golang & Basic Concurrency
+Page_name: Tour of Go 3 (Functions)
+
+1. Which is the correct syntax to declare a function that takes two integer parameters and returns an integer in Go?
+
+    A) `func functionName(param1 int, param2 int) {}`
+    - Incorrect. This syntax would declare a function, taking two integer parameters, but no return type is specified. In Go, the return type should be defined after the parameter list.
+  
+    B) `func functionName param1, param2 int {}`
+    - Incorrect. In correct syntax, the parameter declarations should be encapsulated with parentheses.
+  
+    C) `func functionName(param1 int, param2 int) int {}`
+    - Correct. This syntax declares a function named `functionName` that takes two integer parameters and returns an integer.
+
+2. Which statement is true about functions in Go?
+
+    A) Functions in Go are unable to return multiple values. 
+    - Incorrect. Go allows returning multiple values from a function using this syntax: `func functionName() (int, int) { return val1, val2; }`.
+
+    B) Functions in Go are not considered as first-class citizens.
+    - Incorrect. Go does consider functions as first-class citizens. Functions can be assigned to variables, passed as function parameters, and returned from other functions. This feature provides flexibility and power to Go programming.
+
+    C) Anonymous functions do not have an identifier in Go.
+    - Correct. Anonymous functions, also known as function literals or lambda, do not have names. They are mostly used in function literal syntax where they are useful for creating inline functions.
+
+3. Given the following function, what statement about it is correct?
+
+```go
+func addValues(a int, b int) int {
+    return a+b
+}
+```
+    A) This function cannot be called without arguments.
+    - Correct. This function requires two integer arguments.
+
+    B) This function can be called with any number of integer arguments.
+    - Incorrect. In Go, when a function is defined with certain parameters, the exact number of arguments must be provided to call the function.
+
+    C) This function takes a variable number of arguments.
+    - Incorrect. This function requires exactly two arguments. A function that takes a variable number of arguments in Go would use syntax like this: `func functionName(args...int) {}`.
+
+4. How does Go support returning multiple values from a function?
+
+    A) Using the `return (a, b);` syntax.
+    - Incorrect. In Go, parentheses are not needed when returning multiple values. The correct syntax would be `return a, b`.
+
+    B) Using arrays or slices.
+    - Incorrect. Although you technically can return multiple values in an array or slice, Go natively supports multiple return values, so it's not necessary to use an array or a slice. The correct syntax is `return a, b`.
+
+    C) Using the `return a, b;` syntax.
+    - Correct. This is the correct syntax for returning multiple values in Go. The function declaration would look something like this: `func functionName() (int, int)`.
+
+5. How can you declare an anonymous function in Go?
+
+    A) With this syntax: `var functionName = func() {}`
+    - Correct. This syntax declares an anonymous function and assigns it to a variable.
+
+    B) With this syntax: `function() {}`
+    - Incorrect. While this resembles the anonymous function, it's missing the 'func' keyword which is critical for the syntax. 
+
+    C) With this syntax: `func functionName() {}`
+    - Incorrect. This is the syntax for defining normal, name-bearing functions, not anonymous ones.
+
+6. What is a recursive function in Go?
+
+    A) A function that calls other functions.
+    - Incorrect. While a recursive function does call other functions, more specifically, it calls itself.
+
+    B) A normal function with a special recursive keyword.
+    - Incorrect. There's no special recursive keyword in Go. A recursive function in Go is a function that calls itself.
+
+    C) A function that calls itself within its own definition.
+    - Correct. This is what defines a recursive function.
+
+7. How would you define a function in Go that has another function as its return type?
+
+    A) `func outerFunc() func() returnType { }`
+    - Correct. This syntax correctly declares a function that returns another function.
+
+    B) `func() returnType outerFunc() { }`
+    - Incorrect. This syntax is not correct for declaring a function that returns another function.
+
+    C) `returnType func outerFunc() func() { }`
+    - Incorrect. This syntax is not correct for declaring a function in Go.
+
+8. How can you call a function that returns a function?
+
+    A) `myFunction().ReturnedFunction()`
+    - Correct. This is how you invoke the returned function directly.
+
+    B) `myFunction().(ReturnedFunctionType)`
+    - Incorrect. This assumes that `myFunction` returns an interface and type assertion is being done. It's not the correct syntax to invoke returned function.
+
+    C) `ReturnFunction = myFunction()`
+    - Incorrect. This would only store the returned function in `ReturnFunction`, not call it.
+
+9. Examine the following function, what is wrong with it?
+
+```go
+func printAndIncrement(i int) int {
+    fmt.Println(i)
+    i++
+}
+```
+
+    A) The function should return a value.
+    - Correct. The function is declared to return an integer, but nothing is returned.
+
+    B) The variable `i` should not be incremented.
+    - Incorrect. It's perfectly fine to increment the variable `i`. The error here is related to the function's return value.
+
+    C) `fmt.Println(i)` should be after `i++`.
+    - Incorrect. Print statements can be used anywhere in the function. The error here is related to the function's return value.
+
+10. If you have a one-time operation to be performed within a Go function, what can you use?
+
+    A) A lambda function.
+    - Correct. Lambda (or anonymous) functions are commonly used for one-time operations since they don't have a name and can't be called again.
+
+    B) A closure function.
+    - Incorrect. While closures can technically be used, anonymous (or lambda) functions are more commonly used for one-time operations.
+
+    C) A callback function.
+    - Incorrect. A callback is a function passed as an argument to another function, not typically used for one-time operations within a function.
+
+1. How do you define a variadic function in Go?
+
+    A) By using the `*` prefix before the type of the last parameter
+    - Incorrect. The `*` character is used in Go for creating pointers which is used to hold the memory address of a value, not for defining a variadic function.
+
+    B) By using the `...` suffix appended to the last parameter's type
+    - Correct. Variadic functions in Go are defined with a `...` suffix to the last parameter's type, indicating that the function can accept an arbitrary number of parameters of that type.
+
+    C) By using the `...` prefix before the type of the last parameter
+    - Incorrect. While the `...` symbol is indeed used in the definition of variadic functions, in Go it's appended to the type, not prefixed to it, to denote an unlimited number of parameters of the specified type can be passed.
+
+
+2. How are the arguments of a variadic function accessed within the function in Go?
+
+    A) As an array of the specified type
+    - Incorrect. In Go, the arguments of a variadic function form a slice, not an array. Although arrays are used behind the scenes to implement slices, the two types have different characteristics.
+
+    B) As a map of the specified type
+    - Incorrect. Maps in Go are used for storing key-value pairs, not for holding ordered collections of items like the parameters passed to a variadic function.
+
+    C) As a slice of the specified type
+    - Correct. Inside a variadic function, the parameters are accessed as a slice of the specified type, which provides flexibility for handling an undefined number of parameters.
+
+
+3. Can a variadic function in Go accept other parameters in addition to the variadic set?
+
+    A) No, it can only accept the variadic set of parameters
+    - Incorrect. Variadic functions in Go can accept regular (non-variadic) parameters as well. However, these additional parameters must precede the variadic set.
+
+    B) Yes, it can accept non-variadic parameters before the variadic set
+    - Correct. Variadic functions may include non-variadic parameters, but these additional parameters must be declared before the variadic set, which must be the last parameter in the function declaration.
+
+    C) Yes, it can accept non-variadic parameters both before and after the variadic set
+    - Incorrect. While a variadic function in Go can accept regular parameters in addition to variadic ones, the variadic parameter must be the last one in the function declaration.
+
+
+4. What does the `printNumbers` function in the code snippet do?
+
+    A) It outputs each number on a new line.
+    - Correct. The `printNumbers` function takes a variadic integer parameter and, for each value, prints it to a new line.
+
+    B) It multiplies all numbers and prints the product.
+    - Incorrect. The `printNumbers` function simply iterates over its parameters and prints them. There are no arithmetic operations involved.
+
+    C) It concatenates all numbers and prints the result.
+    - Incorrect. The function uses a `for` loop to handle each number individually, not to concatenate them together. Each number is printed on a separate line.
+
+
+5. What would be the output if we call `printNumbers()` with no parameters?
+
+    A) Syntax error
+    - Incorrect. Go allows you to call a variadic function without any parameters. This would not lead to a syntax error.
+
+    B) No output
+    - Correct. If you call the `printNumbers` function without any parameters, it will produce no output since the function's body does not take any action when there are no parameters to iterate over.
+
+    C) An empty slice `[]`
+    - Incorrect. The function does not print the slice itself. It only prints the numbers within the slice. If no parameters are passed, the function simply doesn't print anything.
+
+
+6. If you have a slice of integers `nums := []int{1, 2, 3, 4, 5}`, how can you use it as an argument to `printNumbers` function?
+
+    A) `printNumbers(nums)`
+    - Incorrect. If you try to pass a slice directly to a variadic function in this manner, Go will interpret it as a single argument and return a type mismatch error.
+
+    B) `printNumbers(nums...)`
+    - Correct. The `...` operator allows you to pass each element of a slice as an individual argument to a variadic function, which matches the function's parameter type expectations.
+
+    C) `printNumbers(&nums)`
+    - Incorrect. While `&nums` would refer to the memory address where `nums` is stored, this is not the correct way to pass a slice to a variadic function in Go. Instead, you can use the `...` operator to pass the elements of the slice.
+
+
+7. Can variadic functions be used with types other than `int`?
+
+    A) No, they can only be used with `int` type
+    - Incorrect. Variadic functions in Go can be used with any data type, not just `int`.
+
+    B) Yes, they can be used with any data type
+    - Correct. Variadic functions in Go are quite flexible and can be used with any data type, whether it's a built-in type like `int`, `float64`, or `string`, or a custom-defined type.
+
+    C) Yes, but only with built-in data types
+    - Incorrect. Variadic functions are not limited to built-in data types. They can also be used with custom types defined by the programmer.
+
+1. Consider the following Golang code snippet:
+   ```
+   func outerFunction() func() int {
+      x := 0
+      return func() int {
+         x++
+         return x
+      }
+   }
+   ```
+   What does this function return?
+
+   A) The variable `x`
+   - Incorrect. The outerFunction does not return the variable directly but a function which has access to the variable `x`.
+   
+   B) A function that increments and returns the variable `x`
+   - Correct. It returns a closure, `func() int`, which increments `x` and returns it. This closure can access the variable `x` from the outer function's scope.
+   
+   C) An error
+   - Incorrect. The function is syntactically correct and will return a function without any errors.
+
+2. Based on your knowledge of Golang closures, what potential issue might the following code snippet encounter and why?
+   ```
+   for i := 0; i < 5; i++ {
+      go func() {
+         fmt.Println(i)
+      }()
+   }
+   time.Sleep(1 * time.Second)
+   ```
+   A) There is a syntax error in the function
+   - Incorrect. The syntax of the function is correct. However, there's a problem with the way the variable `i` is used within the goroutine.
+
+   B) Elements in the loop might not get printed in sequence
+   - Correct. This is due to the non-deterministic nature of goroutines. But there's another, more significant problem with this code.
+
+   C) Variables declared inside the goroutine are not accessible
+   - Incorrect. Variables declared inside a goroutine are accessible. However, in this case `i` is not declared inside the goroutine, it's being accessed from the outer scope.
+
+3. Based on your analysis of the same code snippet as above, provide a solution to the potential issue.
+
+   A) Add a `time.Sleep()` between each goroutine call
+   - Incorrect. This won't guarantee the intent of the program, as goroutines are not always linear and adding a sleep won't address the core issue with the variable `i`.
+
+   B) Pass `i` as a parameter to the closure
+   - Correct. By modifying the closure to `go func(i int) { fmt.Println(i) }(i)`, each goroutine will receive its own copy of `i`, isolating it from subsequent increments.
+
+   C) Declare `i` inside the goroutine
+   - Incorrect. Declaring `i` inside the goroutine will not retain the incrementing value of `i` from the for loop, thereby defeating its purpose.
+
+4. In the context of closures and shared variables, what is a possible consequence when two goroutines access the same variable from their outer scope?
+
+   A) The variable retains the value from the goroutine that accessed it last
+   - Correct. When multiple goroutines access and modify a shared variable without proper synchronization, the last goroutine to write to the variable determines its final value.
+
+   B) The variable toggles between the values set by the goroutines
+   - Incorrect. The variable doesn't toggle between values; rather, it gets overwritten with the value from the latest write operation.
+
+   C) Each goroutine gets a unique copy of the variable
+   - Incorrect. Goroutines do not automatically receive copies of referenced variables. The variable is shared unless explicitly passed to the closure as a parameter.
+
+5. Consider the following function containing a closure:
+   ```
+   func countdown(n int) (func() int) {
+      return func() int {
+         n--
+         return n
+      }
+   }
+   ```
+   What happens if we call this function multiple times?
+
+   A) A fresh countdown starts with each call
+   - Correct. Each call to `countdown()` creates a new closure with its own `n`, hence a fresh countdown starts for every call.
+
+   B) Countdown continues from where it left off in the previous call
+   - Incorrect. Each call to `countdown()` does not continue from the previous countdown. Every call starts a new countdown based on the parameter passed.
+
+   C) It causes an error as `n` is not accessible
+   - Incorrect. `n` is accessible inside the anonymous function. It's correctly defined to be in scope for the returned closure.
+
+1. How do you define an anonymous function in Go?
+
+    A) `func()`
+    - Incorrect. This syntax is missing the function's body, where the function's statements are enclosed.
+  
+    B)  `func(){}`
+    - Correct. This is the basic structure of an anonymous function. It is declared with the keyword func and does not have a name.
+    
+    C)  `function(){}`
+    - Incorrect. The keyword `function` is not valid in Go. The correct keyword to use is `func`.
+
+2. Can anonymous functions in Go have parameters?
+
+    A) No, anonymous functions can't have parameters.
+    - Incorrect. Similar to regular functions in Go, anonymous functions can accept parameters.
+    
+    B) Yes, anonymous functions can have parameters with named types.
+    - Correct. Anonymous functions in Go can have parameters with named types, similar to normal functions.
+    
+    C) Yes, but only unnamed parameters.
+    - Incorrect. This is not accurate, anonymous functions can have named parameters.
+
+3. Consider the following code snippet:
+   ```monospace
+    func() { 
+        fmt.Println("Hello World!") 
+    }()
+    ```
+    What is this piece of code doing?
+    
+    A) Declaring but not executing an anonymous function.
+    - Incorrect. The syntax `()`, seen after the function body, indicates that this anonymous function is being immediately invoked or executed.
+    
+    B) Printing "Hello World!".
+    - Correct. The anonymous function prints "Hello World!" and is immediately invoked.
+    
+    C) Throwing an error because the anonymous function is immediately invoked.
+    - Incorrect. An anonymous function can be immediately invoked without any errors.
+
+4. What is the term when an anonymous function accesses the variables of its outer function?
+
+    A) Encapsulation
+    - Incorrect. Encapsulation is a different concept that involves bundling of related data and methods into a single unit or class.
+    
+    B) Closure
+    - Correct. When an anonymous function is able to capture and use variables from the outer scope, it forms a closure.
+    
+    C) Inheritance
+    - Incorrect. Inheritance is a term from Object-Oriented Programming and isn't related to anonymous functions.
+
+5. What is wrong with this Go code?
+   ```monospace
+   add := func(x int, y int) {
+        return x + y
+   }
+   sum := add(1, 2)
+   fmt.Println(sum)
+   ```
+  
+    A) The code is fine. There's nothing wrong.
+    - Incorrect. The anonymous function is returning a value and you need to specify the return type.
+    
+    B) The anonymous function does not specify a return type.
+    - Correct. In Go, the function's return type must be specified. The function should be defined as `func(x int, y int) int`.
+    
+    C) You can't use the `:=` operator to assign a function to a variable.
+    - Incorrect. You can use the `:=` operator to assign a function to a variable in Go.
+
+6. Can you call an anonymous function without immediately invoking it?
+
+    A) Yes, by assigning it to a variable.
+    - Correct. You can assign the anonymous function to a variable, and then call the function later using the variable.
+    
+    B) No, anonymous functions must always be invoked immediately.
+    - Incorrect. Although anonymous functions can be invoked immediately, it's not an obligation. You can choose to invoke them later.
+    
+    C) Yes, but only inside other functions.
+    - Incorrect. Anonymous functions can be invoked either immediately or later, regardless of whether they're inside other functions or not.
+
+7. In Go, can an anonymous function modify a variable from its outer function?
+
+    A) No, anonymous functions have their own scope and can't access outer variables.
+    - Incorrect. Anonymous functions can actually form a closure and manipulate the outer function’s variable.
+
+    B) Yes, but it won't change the original outer variable's value.
+    - Incorrect. When forming closures, an anonymous function modifies the original outer variable and not a copy.
+    
+    C) Yes, forming a closure enables the anonymous function to access and modify outer variables.
+    - Correct. When forming closures, the anonymous function is able to modify the outer function’s variables. 
+
+8. What is the term for immediately calling or invoking a function once it is defined in Go?
+
+    A) Direct invocation
+    - Incorrect. Although this term describes the process, it's not the term typically used.
+    
+    B) Function protrusion
+    - Incorrect. This term doesn't exist in the context of programming or Go.
+    
+    C) Immediately Invoked Function Expression (IIFE)
+    - Correct. This term accurately describes the process where a function is immediately invoked as soon as it has been defined.
+
+9. Can an anonymous function in Go return multiple values?
+
+    A) Yes, as with regular functions, anonymous functions can also return multiple values.
+    - Correct. Just like regular functions, anonymous functions can return multiple values.
+    
+    B) No, anonymous functions are limited to a single return value.
+    - Incorrect. This statement is false. Anonymous functions in Go can return multiple values just like regular functions.
+
+    C) No, anonymous functions are incapable of returning values.
+    - Incorrect. This statement is false. In Go, anonymous functions can return values just like regular functions.
+
+10. How do you execute an anonymous function that was assigned to a variable? Example:
+    ```
+    greet := func() {
+        fmt.Println("Hello World!")
+    }
+    ```
+    
+    A) `fmt.Println(greet)`
+    - Incorrect. This will print the address of the function in memory, not execute the function.
+    
+    B) `greet()`
+    - Correct. The parentheses after the variable name are used to call or invoke the function.
+    
+    C) `greet;`
+    - Incorrect. This does not execute the function. Instead, you would need the parentheses `()` after `greet` to call it.

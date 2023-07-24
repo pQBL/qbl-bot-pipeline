@@ -1,0 +1,35 @@
+Unit_name: Week 1: Intro to Golang & Basic Concurrency
+Page_name: What is parallelism and concurrency?
+
+1. Programming problems can be solved more quickly using parallelism. What specific conditions must be met for this statement to hold true?
+
+    A) The problem must be capable of being broken down into smaller independent tasks that can be executed simultaneously.
+    - If this is your final answer, mark it as correct, but consider that while it's a necessary condition it's not the only condition for parallelism to be efficient. 
+  
+    B) The system must have multiple cores or processors.
+    - If this is your final answer, mark it as correct, but remember that having multiple cores or processors isn't by itself a guarantee that the problem will be solved faster.
+    
+    C) Both A and B
+    - If this is your final answer, mark it as correct. Both conditions are needed: independent tasks and multiple cores. Only then can parallelism potentially speed up program execution.
+
+2. In what situation would using concurrency instead of parallelism likely lead to more efficient utilization of system resources?
+
+    A) If the task can be divided into independent subtasks that can be executed simultaneously 
+    - Think again. This describes a situation where parallelism, rather than concurrency, is likely to be more effective.
+    
+    B) If the program has to respond to multiple non-related external events that do not require the same resources simultaneously
+    - Mark your answer correct if it's this one. Concurrent programming is more about dealing with lots of things at once, and it’s perfect for tasks that have nothing to do with each other.
+    
+    C) If the program needs to run the same calculations repeatedly in a short span of time
+    - Incorrect. In this scenario, parallelism might be a better option as the same calculations can be run simultaneously, assuming multiple cores are available.
+
+3. What is one way deadlocks can be avoided in a Go program?
+
+    A) Use a mutex to ensure that only one goroutine at a time can access the resource
+    - This is correct. A Mutex is a mutual exclusion lock. The zero value for a Mutex is an unlocked mutex. A Mutex must not be copied after first use.
+
+    B) Increase the number of goroutines to decrease individual load
+    - Incorrect. Increasing the number of goroutines may exacerbate the deadlock situation instead of resolving it. The key to preventing deadlocks is proper management of resource access.
+    
+    C) Assign each goroutine a static, predetermined amount of system resources
+    - Incorrect. This doesn't address the core issue at hand, which is that each goroutine is waiting for the other to release a resource.
