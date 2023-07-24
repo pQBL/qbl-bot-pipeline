@@ -18,7 +18,7 @@ start_time = time.time()
 
 # Generate pages
 for page in pages:
-    qbl_bot.generate_page(unit, page["title"], page["skills"], model="gpt-3.5-turbo")
+    qbl_bot.generate_page(unit, page["title"], page["skills"])
 
 # Print total time to generate all pages
 end_time = time.time()

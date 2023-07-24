@@ -1,13 +1,22 @@
 import os, sys, time, openai
 from typing import List, Dict, Optional
+from prompts import questions_prompt, improvement_prompt
+
+role_preset = "Your are a pedagogical professor in computer science, with 20+ years of experience."
+course_preset = """The course is an introduction to parallel and concurrent programming, and the programming language is Go / Golang. 
+
+Assume students have some programming experience in another language, such as Java or Python.
+
+Provide code snippets to make it more interesting, and format inline code as monospace."""
 
 #
 # Helper functions
 #
 def get_openai_key() -> str:
-    key = os.getenv("OPENAI_API_KEY_KTH") 
+    key_name = "OPENAI_API_KEY_KTH"
+    key = os.getenv(key_name) 
     if not key:
-        raise ValueError("Environment variable OPENAI_API_KEY is not set.")
+        raise ValueError(f"Environment variable {key_name} is not set.")
     return key
 
 # Filter out the chars in the given string
@@ -48,90 +57,13 @@ def fetch_response_content(prompt: str, messages: List[Dict[str, str]], model: s
 
     return content
 
-
-def questions_prompt(skill: str, number_of_questions: int) -> str:
-    return f"""Your task is to create questions for a Question Based Learning (QBL) course.
-
-The course is an introduction to parallel and concurrent programming, and the programming language is Go / Golang. 
-
-Assume students have some programming experience in another language, such as Java or Python.
-
-You will be given contextual information wrapped in triple hash-symbols (###).
-
-Summary of QBL: ###
-QBL is about learning through answering questions. The focus is on learning, not evaluation.
-
-The underlying philosophy is: "If you know the answer to all the questions from the start, it would mean you had nothing to learn from the course."
-
-A course consists of learning goals.
-Learning goals consist of skills.
-Skills consist of questions.
-
-Questions consist of:
-1. The actual question
-2. Answer options
-3. Tailored feedback for each option
-
-Good questions should:
-* be easy to understand
-* focus on common misconceptions regarding the subject
-* encourage independent thinking ("understanding" or higher in Bloom's taxonomy)
-
-Good options should:
-* be easy to read (short and concise)
-* be reasonable and appropriate in context
-* be given in sets of three
-
-Good feedback should:
-* begin with "Correct." or "Incorrect." as appropriate
-* be short (about two sentences) and constructive
-* provide a unique explanation for each option (including the correct one)
-* guide the student in the right direction when the option is incorrect
-* only reveal the answer for the correct option(!)
-###
-
-Each entry should be a question with answer alternatives and each answer alternative should have feedback attached as a subpoint. This should be provided in a list format.
-
-Question format: ###
-<question number, a single digit starting with 1>. <question>
-
-    A) <plausible answer option>
-    - <unique feedback tailored to A), that does not reveal the answer if incorrect>
-  
-    B)  <plausible answer option>
-    - <unique feedback tailored to B), that does not reveal the answer if incorrect>
-
-    C)  <plausible answer option>
-    - <unique feedback tailored to C), that does not reveal the answer if incorrect>
-###
-
-Begin by generating a short but informative knowledge bank about the skill, with the most essential information.
-
-Skill: ###{skill}###
-
-End by generating {number_of_questions} questions of varying difficulty, and provide code snippets to make it more interesting.
-
-Format inline code as monospace.
-
-(Remember: Do not reveal the correct answer if an option is incorrect!)"""
-
-def improvement_prompt() -> str:
-    return """Your task is now to evaluate the questions by critiquing them thoroughly.
-
-First give an unordered bullet list of the critique. Focus on the things that would give the most improvement, not what is already good.
-
-Then, improve the questions based on the list.
-
-Mark the critique section with "CRITIQUE:" and the improved questions with "IMPROVED QUESTIONS:".
-
-In the final output, make sure to separate the end of one question from the beginning of another with 2 blank lines (2 line breaks)."""
-
 #
 # Main function, generates a page file in the specified directory.
 # "gpt-3.5-turbo" is cheaper, but use "gpt-4" for better results.
 #
 def generate_page(unit_name: str, page_name: str, skills: List[str], questions_per_skill: int = 10,
-                  dst_dir: str = "course_content", model="gpt-4") -> Optional[str]:
+                  dst_dir: str = "course_content", model="gpt-4",
+                  role_description: str = role_preset, course_description: str = course_preset) -> Optional[str]:
     # Start timer
     start_time = time.time()
 
@@ -162,10 +94,9 @@ def generate_page(unit_name: str, page_name: str, skills: List[str], questions_p
 
     try: 
         for skill in skills:
-            context = "Your are a pedagogical professor in computer science, with 20+ years of experience."
-            messages = [{"role": "system", "content": context}]
+            messages = [{"role": "system", "content": role_description}]
 
-            questions = fetch_response_content(questions_prompt(skill, questions_per_skill), messages, model)
+            questions = fetch_response_content(questions_prompt(course_description, skill, questions_per_skill), messages, model)
             messages.append(create_message("assistant", questions))
 
             critique_and_improved_questions = fetch_response_content(improvement_prompt(), messages, model)
