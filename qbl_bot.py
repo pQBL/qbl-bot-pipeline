@@ -62,8 +62,8 @@ def fetch_response_content(prompt: str, messages: List[Dict[str, str]], model: s
 # "gpt-3.5-turbo" is cheaper, but use "gpt-4" for better results.
 #
 def generate_page(unit_name: str, page_name: str, skills: List[str], questions_per_skill: int = 10,
-                  dst_dir: str = "course_content", role_description: str = role_preset,
-                  course_description: str = course_preset, model: str = "gpt-4") -> Optional[str]:
+                  dst_dir: str = "course_content", model="gpt-4",
+                  role_description: str = role_preset, course_description: str = course_preset) -> Optional[str]:
     # Start timer
     start_time = time.time()
 
