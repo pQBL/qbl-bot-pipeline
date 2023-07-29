@@ -9,11 +9,11 @@ def create_pages(skillmap_path, dst_dir):
     skillmap = read_skillmap(skillmap_path)
     for key, unit_dict in skillmap.items():
         if not key.startswith("unit_"):
-            continue     
+            continue
         unit_name = unit_dict['unit_name']
         page_count = 1
         while True:
-            page_key = f"page-{page_count}"
+            page_key = f"page_{page_count}"
             if page_key not in unit_dict:
                 break
             page_dict = unit_dict[page_key]
