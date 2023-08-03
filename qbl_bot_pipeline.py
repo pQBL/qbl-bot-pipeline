@@ -7,6 +7,10 @@ import yaml
 def create_pages(skillmap_path, dst_dir):
     """Main loop for creating pages from a skillmap"""
     skillmap = read_skillmap(skillmap_path)
+    role_description = skillmap['role_description']
+    course_description = skillmap['course_description']
+    questions_per_skill = skillmap['questions_per_skill']
+    model = "gpt-4"
     for key, unit_dict in skillmap.items():
         if not key.startswith("unit_"):
             continue
@@ -16,10 +20,11 @@ def create_pages(skillmap_path, dst_dir):
             page_key = f"page_{page_count}"
             if page_key not in unit_dict:
                 break
-            page = unit[page_key]
+            page = unit_dict[page_key]
             page_name = page['page_name']
             skills = page['skills']
-            created_page_path = qbl_bot.generate_page(unit_name, page_name, skills, questions_per_skill, dst_dir)
+            created_page_path = qbl_bot.generate_page(unit_name, page_name, skills, questions_per_skill, dst_dir,
+                                                      model, role_description, course_description)
             subprocess.run(["bash", "create_PR.sh", created_page_path], check=True)
             page_count += 1
 
