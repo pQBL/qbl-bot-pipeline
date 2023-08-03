@@ -16,10 +16,10 @@ def create_pages(skillmap_path, dst_dir):
             page_key = f"page_{page_count}"
             if page_key not in unit_dict:
                 break
-            page_dict = unit_dict[page_key]
-            page_name = page_dict['page_name']
-            skills = page_dict['skills']
-            created_page_path = qbl_bot.generate_page(unit_name, page_name, skills, int(skillmap["questions_per_skill"]), dst_dir, skillmap["role_description"], skillmap["course_description"])
+            page = unit[page_key]
+            page_name = page['page_name']
+            skills = page['skills']
+            created_page_path = qbl_bot.generate_page(unit_name, page_name, skills, questions_per_skill, dst_dir)
             subprocess.run(["bash", "create_PR.sh", created_page_path], check=True)
             page_count += 1
 
